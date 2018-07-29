@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Thorn.dao.blogMapper">
+    <resultMap id="BaseResultMap" type="com.Thorn.model.blog">
+        <constructor>
+            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="dob" javaType="java.util.Date" jdbcType="DATE"/>
+            <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="author_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <insert id="insert" parameterType="com.Thorn.model.blog">
+        insert into blog (id, title, content,
+        dob, state, author_id)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
+        #{dob,jdbcType=DATE}, #{state,jdbcType=VARCHAR}, #{authorId,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.Thorn.model.blog">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="dob != null">
+                dob,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="authorId != null">
+                author_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="dob != null">
+                #{dob,jdbcType=DATE},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                #{authorId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <resultMap id="blogResultMap" type="com.Thorn.model.blog">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result javaType="java.util.Date" column="dob" property="dob"/>
+        <result column="state" property="state"/>
+
+        <association property="author" column="author_id"
+                     javaType="com.Thorn.model.author" foreignColumn="id">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="phone" property="phone"/>
+        </association>
+
+
+    </resultMap>
+
+    <select id="findAllBlogs" resultMap="blogResultMap">
+        select b.id, b.title, b.content, b.dob, b.state,
+        a.id, a.name, a.phone
+        from blog b left outer join Author a on b.author_id=a.id
+    </select>
+</mapper>
