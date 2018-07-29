@@ -21,12 +21,12 @@
         /**
          * EXPERIMENTAL Highcharts module to place labels next to a series in a natural position.
          *
-         * TODO:
+         *
          * - add column support (box collision detection, boxesToAvoid logic)
          * - other series types, area etc.
          * - avoid data labels, when data labels above, show series label below.
          * - add more options (connector, format, formatter)
-         * 
+         *
          * http://jsfiddle.net/highcharts/L2u9rpwr/
          * http://jsfiddle.net/highcharts/y5A37/
          * http://jsfiddle.net/highcharts/264Nm/
@@ -274,7 +274,7 @@
                 }
             }
 
-            // For each position, check if the lines around the label intersect with any of the 
+            // For each position, check if the lines around the label intersect with any of the
             // graphs
             for (i = 0; i < chart.series.length; i += 1) {
                 series = chart.series[i];
@@ -322,7 +322,7 @@
                         }
                     }
 
-                    // Do we need a connector? 
+                    // Do we need a connector?
                     if (connectorEnabled && this === series && ((checkDistance && !withinRange) ||
                             distToOthersSquared < Math.pow(this.options.label.connectorNeighbourDistance, 2))) {
                         for (j = 1; j < points.length; j += 1) {
@@ -353,7 +353,7 @@
         };
 
         /**
-         * The main initiator method that runs on chart level after initiation and redraw. It runs in 
+         * The main initiator method that runs on chart level after initiation and redraw. It runs in
          * a timeout to prevent locking, and loops over all series, taking all series and labels into
          * account when placing the labels.
          */

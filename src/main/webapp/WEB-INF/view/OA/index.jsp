@@ -62,7 +62,7 @@
 		</div>
 		<div class="site-mobile-shade"></div>
 
-		<div class="fly-panel fly-panel-user"  ">
+        <div class="fly-panel fly-panel-user">
 			<div class="layui-tab layui-tab-brief" lay-filter="user">
 
 				<div class="layui-tab-content" style="padding: 20px;padding-top: 0px;">

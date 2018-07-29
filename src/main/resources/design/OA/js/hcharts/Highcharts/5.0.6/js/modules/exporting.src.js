@@ -773,12 +773,7 @@
             'desc'
         ];
 
-        /**
-         * Analyze inherited styles from stylesheets and add them inline
-         *
-         * @todo: What are the border styles for text about? In general, text has a lot of properties.
-         * @todo: Make it work with IE9 and IE10.
-         */
+
         Chart.prototype.inlineStyles = function() {
             var renderer = this.renderer,
                 inlineToAttributes = renderer.inlineToAttributes,
@@ -829,7 +824,7 @@
                         dummySVG.removeChild(dummy);
                     }
 
-                    // Loop over all the computed styles and check whether they are in the 
+                    // Loop over all the computed styles and check whether they are in the
                     // white list for styles or atttributes.
                     for (prop in styles) {
 

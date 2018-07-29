@@ -52,8 +52,6 @@
                 });
                 return previous;
             },
-            // @todo find correct name for this function. 
-            // @todo Similar to reduce, this function is likely redundant
             recursive = function(item, func, context) {
                 var next;
                 context = context || this;
@@ -193,7 +191,7 @@
                     children: children,
                     level: level,
                     parent: parent,
-                    visible: false // @todo move this to better location
+                    visible: false
                 };
                 series.nodeMap[node.id] = node;
                 if (point) {
@@ -217,7 +215,7 @@
                     if (!child.ignore) {
                         childrenTotal += child.val;
                     } else {
-                        // @todo Add predicate to avoid looping already ignored children
+
                         recursive(child.children, function(children) {
                             var next = false;
                             each(children, function(node) {
@@ -346,7 +344,7 @@
                         point.colorIndex = colorIndex;
                     }
 
-                    // Do it all again with the children	
+                    // Do it all again with the children
                     if (node.children.length) {
                         each(node.children, function(child) {
                             series.setColorRecursive(child, color, colorIndex);
@@ -565,7 +563,7 @@
                     arr[item.level] = item;
                     return arr;
                 }, {});
-                tree = this.tree = this.getTree(); // @todo Only if series.isDirtyData is true
+                tree = this.tree = this.getTree();
 
                 // Calculate plotting values.
                 this.axisRatio = (this.xAxis.len / this.yAxis.len);
@@ -676,7 +674,7 @@
                     if (!series[groupKey]) {
                         series[groupKey] = series.chart.renderer.g(groupKey)
                             .attr({
-                                zIndex: 1000 - point.node.levelDynamic // @todo Set the zIndex based upon the number of levels, instead of using 1000
+                                zIndex: 1000 - point.node.levelDynamic
                             })
                             .add(series.group);
                     }
@@ -686,7 +684,7 @@
                 // Call standard drawPoints
                 seriesTypes.column.prototype.drawPoints.call(this);
 
-                // If drillToNode is allowed, set a point cursor on clickables & add drillId to point 
+                // If drillToNode is allowed, set a point cursor on clickables & add drillId to point
                 if (series.options.allowDrillToNode) {
                     each(points, function(point) {
                         if (point.graphic) {
@@ -704,7 +702,7 @@
                     var point = event.point,
                         drillId = point.drillId,
                         drillName;
-                    // If a drill id is returned, add click event and cursor. 
+                    // If a drill id is returned, add click event and cursor.
                     if (drillId) {
                         drillName = series.nodeMap[series.rootNode].name || series.rootNode;
                         point.setState(''); // Remove hover
