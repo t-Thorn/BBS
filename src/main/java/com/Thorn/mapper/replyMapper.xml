@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Thorn.dao.replyMapper">
+    <resultMap id="BaseResultMap" type="com.Thorn.model.reply">
+        <constructor>
+            <arg column="postid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="floor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="floorex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="replyer" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="replytime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="lastfloor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <insert id="insert" parameterType="com.Thorn.model.reply">
+        insert into reply (postid, floor, floorex,
+        content, replyer, replytime,
+        lastfloor)
+        values (#{postid,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{floorex,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR}, #{replyer,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP},
+        #{lastfloor,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" parameterType="com.Thorn.model.reply">
+        insert into reply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="postid != null">
+                postid,
+            </if>
+            <if test="floor != null">
+                floor,
+            </if>
+            <if test="floorex != null">
+                floorex,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="replyer != null">
+                replyer,
+            </if>
+            <if test="replytime != null">
+                replytime,
+            </if>
+            <if test="lastfloor != null">
+                lastfloor,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="postid != null">
+                #{postid,jdbcType=INTEGER},
+            </if>
+            <if test="floor != null">
+                #{floor,jdbcType=INTEGER},
+            </if>
+            <if test="floorex != null">
+                #{floorex,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="replyer != null">
+                #{replyer,jdbcType=VARCHAR},
+            </if>
+            <if test="replytime != null">
+                #{replytime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastfloor != null">
+                #{lastfloor,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+</mapper>

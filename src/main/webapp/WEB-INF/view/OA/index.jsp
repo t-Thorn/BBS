@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
   <meta charset="utf-8">
@@ -7,14 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="keywords" content="">
   <meta name="description" content="">
-  <link rel="stylesheet" href="res/layui/css/layui.css">
-  <link rel="stylesheet" href="res/css/global.css">
-<script src="res/layui/layui.js"></script>
+	<link rel="stylesheet" href="/res/layui/css/layui.css">
+	<link rel="stylesheet" href="/res/css/global.css">
+	<script src="/res/layui/layui.js"></script>
 </head>
 <body>
 <div class="header" >
   <div class="main">
-    <a  href="index.jsp"  style="margin-left: 30px;line-height: 65px; color: white;font-size: 18px;">通用的管理系统后台</a>
+	  <a href="index.html"
+		 style="margin-left: 30px;line-height: 65px; color: white;font-size: 18px;">论坛管理系统后台</a>
     <div class="nav">
 
     </div>
@@ -22,7 +23,7 @@
     <div class="nav-user">
       <!-- 登入后的状态 -->
 
-      <a class="avatar" href="index.jsp">
+		<a class="avatar" href="index.html">
         <img src="res/images/8.jpg">
         <cite style="color: white;">管理员</cite>
         <i style="color: white;">退出</i>
@@ -38,23 +39,16 @@
 
 	<div class="main fly-user-main layui-clear">
 		<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-			<li class="layui-nav-item layui-this" ><a href="index.jsp"> <i
+			<li class="layui-nav-item layui-this"><a href="/OA/search"> <i
 					class="layui-icon">&#xe609;</i> 首页 </a></li>
-
-								<li class="layui-nav-item "><a href="role.html" target="right"> <i
-					class="layui-icon">&#xe612;</i> 角色管理</a></li>
-			<li class="layui-nav-item "><a href="user.html" target="right"> <i
+			<li class="layui-nav-item "><a href="/OA/user" target="right"> <i
 					class="layui-icon">&#xe612;</i> 用户管理</a></li>
-						<li class="layui-nav-item"><a href="newsType.html" target="right"> <i
-					class="layui-icon">&#xe611;</i> 新闻分类 </a></li>
-			<li class="layui-nav-item "><a href="news.html" target="right"> <i
-					class="layui-icon">&#xe611;</i> 新闻管理</a></li>
-			<li class="layui-nav-item  "><a href="javascript:void(0)" onclick="updatePwd('修改密码',2)"> <i
+			<li class="layui-nav-item"><a href="/OA/newsType" target="right"> <i
+					class="layui-icon">&#xe611;</i> 浏览帖子 </a></li>
+			<li class="layui-nav-item  "><a href="/OA/updatePwd" onclick="updatePwd('修改密码',2)"> <i
 					class="layui-icon">&#xe620;</i> 修改密码 </a></li>
-						<li class="layui-nav-item "><a href="charts-1.html" target="right"> <i
-					class="layui-icon">&#xe61a;</i> 报表统计 </a></li>
-				<li class="layui-nav-item "><a href="404.html" target="right"> <i
-					class="layui-icon">&#xe61a;</i> 404错误页面 </a></li>
+
+
 		</ul>
 
 		<div class="site-tree-mobile layui-hide">
@@ -62,12 +56,13 @@
 		</div>
 		<div class="site-mobile-shade"></div>
 
-        <div class="fly-panel fly-panel-user">
+		<div class="fly-panel fly-panel-user">
 			<div class="layui-tab layui-tab-brief" lay-filter="user">
 
 				<div class="layui-tab-content" style="padding: 20px;padding-top: 0px;">
 
-    					<iframe src="newsType.html" width="88%" style="border: none;" height="800" border="none" name="right"></iframe>
+					<iframe src="/OA/newsType" width="88%" style="border: none;" height="800"
+							border="none" name="right"></iframe>
 					</div>
 				</div>
 			</div>

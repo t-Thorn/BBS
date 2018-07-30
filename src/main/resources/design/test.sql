@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-07-29 17:39:46
+Date: 2018-07-30 14:52:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,6 +28,7 @@ CREATE TABLE `post` (
   `posttime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `postnum` int(11) DEFAULT '0',
   `lastposttime` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `views` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `poster` (`username`),
   CONSTRAINT `poster` FOREIGN KEY (`username`) REFERENCES `user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -68,10 +69,15 @@ CREATE TABLE `user` (
   `password` varchar(18) NOT NULL,
   `name` varchar(18) DEFAULT '',
   `age` int(11) DEFAULT '0',
+  `gender` varchar(255) NOT NULL DEFAULT '',
   `identity` varchar(18) NOT NULL,
   `level` int(1) DEFAULT '1',
   `photo` varchar(255) DEFAULT '',
   `regdate` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `fans` int(11) DEFAULT '0',
+  `attention` text,
+  `history` text,
+  `collections` text,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

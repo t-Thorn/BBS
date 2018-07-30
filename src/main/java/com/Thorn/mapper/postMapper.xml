@@ -5,6 +5,90 @@
     <resultMap id="BaseResultMap" type="com.Thorn.model.post">
         <constructor>
             <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="type" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="grade" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="posttime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="postnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="lastposttime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="views" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+    <insert id="insert" parameterType="com.Thorn.model.post">
+        insert into post (id, title, username,
+        type, grade, posttime,
+        postnum, lastposttime, views
+        )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
+        #{type,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{posttime,jdbcType=TIMESTAMP},
+        #{postnum,jdbcType=INTEGER}, #{lastposttime,jdbcType=TIMESTAMP}, #{views,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.Thorn.model.post">
+        insert into post
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="grade != null">
+                grade,
+            </if>
+            <if test="posttime != null">
+                posttime,
+            </if>
+            <if test="postnum != null">
+                postnum,
+            </if>
+            <if test="lastposttime != null">
+                lastposttime,
+            </if>
+            <if test="views != null">
+                views,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="grade != null">
+                #{grade,jdbcType=INTEGER},
+            </if>
+            <if test="posttime != null">
+                #{posttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="postnum != null">
+                #{postnum,jdbcType=INTEGER},
+            </if>
+            <if test="lastposttime != null">
+                #{lastposttime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="views != null">
+                #{views,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <resultMap id="BaseResultMap" type="com.Thorn.model.post">
+        <constructor>
+            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="dob" javaType="java.util.Date" jdbcType="DATE"/>
             <arg column="blog_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>

@@ -1,0 +1,89 @@
+package com.Thorn.model;
+
+import java.util.Date;
+
+public class reply {
+    private Integer postid;
+
+    private Integer floor;
+
+    private Integer floorex;
+
+    private String content;
+
+    private String replyer;
+
+    private Date replytime;
+
+    private Integer lastfloor;
+
+    public reply(Integer postid, Integer floor, Integer floorex, String content, String replyer, Date replytime, Integer lastfloor) {
+        this.postid = postid;
+        this.floor = floor;
+        this.floorex = floorex;
+        this.content = content;
+        this.replyer = replyer;
+        this.replytime = replytime;
+        this.lastfloor = lastfloor;
+    }
+
+    public reply() {
+        super();
+    }
+
+    public Integer getPostid() {
+        return postid;
+    }
+
+    public void setPostid(Integer postid) {
+        this.postid = postid;
+    }
+
+    public Integer getFloor() {
+        return floor;
+    }
+
+    public void setFloor(Integer floor) {
+        this.floor = floor;
+    }
+
+    public Integer getFloorex() {
+        return floorex;
+    }
+
+    public void setFloorex(Integer floorex) {
+        this.floorex = floorex;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
+    }
+
+    public String getReplyer() {
+        return replyer;
+    }
+
+    public void setReplyer(String replyer) {
+        this.replyer = replyer == null ? null : replyer.trim();
+    }
+
+    public Date getReplytime() {
+        return replytime;
+    }
+
+    public void setReplytime(Date replytime) {
+        this.replytime = replytime;
+    }
+
+    public Integer getLastfloor() {
+        return lastfloor;
+    }
+
+    public void setLastfloor(Integer lastfloor) {
+        this.lastfloor = lastfloor;
+    }
+}

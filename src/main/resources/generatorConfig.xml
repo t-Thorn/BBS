@@ -69,18 +69,12 @@
         </javaClientGenerator>
 
 
-        <table tableName="author" domainObjectName="author"
+        <table tableName="user" domainObjectName="user"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
-
-        <table tableName="city" domainObjectName="city"
-               enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false">
-        </table>
-        <table tableName="blog" domainObjectName="blog"
+        <table tableName="reply" domainObjectName="reply"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

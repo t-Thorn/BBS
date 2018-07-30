@@ -29,7 +29,16 @@ public class HelloController {
     @GetMapping("/")
     public String hi(@ModelAttribute("user") UserTest userTest, BindingResult
             bindingResult, Model model) {
-        return "/OA/index";
+        return "/BBS/base";
     }
 
+    @GetMapping("/OA/{jsp}")
+    public String sub(@PathVariable(value = "jsp") String jsp) {
+        return "/OA/" + jsp;
+    }
+
+    @GetMapping("/BBS/{jsp}")
+    public String BBS(@PathVariable(value = "jsp") String jsp) {
+        return "/BBS/" + jsp;
+    }
 }
