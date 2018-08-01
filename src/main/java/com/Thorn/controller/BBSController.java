@@ -37,8 +37,7 @@ public class BBSController {
     }
 
     @ModelAttribute
-    public void inPublicMethod(Model
-                                       model) {
+    public void inPublicMethod(Model model) {
         model.addAttribute("EssencePosts", postMapper.findEssencePost());
         model.addAttribute("HotPosts", postMapper.findHotPost());
         model.addAttribute("TopPosts", postMapper.findTopPost());
