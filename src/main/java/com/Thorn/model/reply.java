@@ -9,22 +9,22 @@ public class reply {
 
     private Integer floorex;
 
-    private String content;
-
     private String replyer;
 
     private Date replytime;
 
     private Integer lastfloor;
 
-    public reply(Integer postid, Integer floor, Integer floorex, String content, String replyer, Date replytime, Integer lastfloor) {
+    private String content;
+
+    public reply(Integer postid, Integer floor, Integer floorex, String replyer, Date replytime, Integer lastfloor, String content) {
         this.postid = postid;
         this.floor = floor;
         this.floorex = floorex;
-        this.content = content;
         this.replyer = replyer;
         this.replytime = replytime;
         this.lastfloor = lastfloor;
+        this.content = content;
     }
 
     public reply() {
@@ -55,14 +55,6 @@ public class reply {
         this.floorex = floorex;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
-
     public String getReplyer() {
         return replyer;
     }
@@ -85,5 +77,13 @@ public class reply {
 
     public void setLastfloor(Integer lastfloor) {
         this.lastfloor = lastfloor;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content == null ? null : content.trim();
     }
 }

@@ -1,4 +1,6 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,21 +9,14 @@
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/public.css"/>
     <link rel="stylesheet" href="/css/index.css"/>
+    <script src="/js/jquery-1.8.3.min.js"></script>
 </head>
 <body>
+<c:if test="${searchError!=null}">
+    <script>alert("${searchError}")</script>
+</c:if>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="/img/logo.png" alt="" class="headPic1"/></a>
-        <ul class="headNav">
-            <li><a href="">首页</a></li>
-            <li><a href="">沪牌竞拍</a></li>
-            <li><a href="">拍王助手</a></li>
-            <li><a href="">深圳竞价摇号</a></li>
-            <li><a href="">广州竞价摇号</a></li>
-            <li><a href="">杭州竞价摇号</a></li>
-            <li><a href="">天津竞价摇号</a></li>
-            <li><a href="">增值服务</a></li>
-        </ul>
         <!--未登入开始-->
         <div class="ltForm appear">
             <a href=""><img src="/img/indexForm_bg.png" alt="" class="headPic2"/></a>
@@ -54,218 +49,102 @@
     <div class="indexMain_left">
         <div class="indexMain_left_btn">
             <ul>
-                <li><a href="javascript:">置顶</a></li>
                 <li><a href="javascript:" class="on">最新</a></li>
             </ul>
         </div>
         <div class="indexMain_left_con">
-            <!--有主题图循环开始-->
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="havePic">
-                        <a href="">
-                            <div class="havePic_head"></div>
+            <!--帖子列表-->
+            <c:forEach items="${posts}" var="post" varStatus="x">
+                <div class="indexCon_msg">
+                    <div class="indexCon_msg_pic">
+                        <img src="/photo/${post.getUser().getPhoto()}">
+                    </div>
+                    <div class="indexCon_msg_detail">
+                        <a href="/BBS/post?param=${post.getId()}">
+                            <c:choose>
+                                <c:when test="${post.getType() eq '1'}">
+                                    <div class="indexCon_msg_detail_tittle_help">
+                                        <span>求助</span>
+                                        <p>${post.getTitle()}
+                                        </p>
+                                    </div>
+                                </c:when>
+                                <c:when test="${post.getType() eq '2'}">
+                                    <div class="indexCon_msg_detail_tittle_exp">
+                                        <span>经验</span>
+                                        <p>${post.getTitle()}
+                                        </p>
+                                    </div>
+                                </c:when>
+                                <c:when test="${post.getType() eq '3'}">
+                                    <div class="indexCon_msg_detail_tittle_chat">
+                                        <span>闲聊</span>
+                                        <p>${post.getTitle()}
+                                        </p>
+                                    </div>
+                                </c:when>
+                                <c:when test="${post.getType() eq '0'}">
+                                    <div class="indexCon_msg_detail_tittle_common">
+                                        <span>正常</span>
+                                        <p onclick="/BBS/post?param=${post.getId()}">
+                                                ${post.getTitle()}
+                                        </p>
+                                    </div>
+                                </c:when>
+                            </c:choose>
                         </a>
+                        <!--<div class="havePic">
+                            <a href="">
+                                <div class="havePic_head"></div>
+                            </a>
+                        </div>-->
+                        <div class="indexCon_msg_detail_other">
+                            <ul>
+                                <li>${post.getUsername()}</li>
+                                <li>
+                                    <fmt:formatDate value="${post.getPosttime()}"
+                                                    pattern="yyyy-MM-dd HH:mm"/>
+                                </li>
+                                <li>${post.getPostnum()}</li>
+                                <li>${post.getViews()}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
-            </div>
+
+            </c:forEach>
             <!--有主题图循环结束-->
-            <!--无主题图循环开始-->
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <!--无主题图循环结束-->
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="havePic">
-                        <a href="">
-                            <div class="havePic_head"></div>
-                        </a>
-                    </div>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="havePic">
-                        <a href="">
-                            <div class="havePic_head"></div>
-                        </a>
-                    </div>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"></div>
-                <div class="indexCon_msg_detail">
-                    <a href="">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>竞拍</span>
-                            <p>关注上海车牌竞拍方面的资讯，对当月竞拍分析发表独到见解</p>
-                        </div>
-                    </a>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li>花开花落</li>
-                            <li>1天前</li>
-                            <li>21</li>
-                            <li>28</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
         </div>
         <div class="indexFooter">
             <div class="indexFooter_con">
-                <a href="javascript:"><</a>
-                <a href="" class="on">1</a>
-                <a href="">2</a>
-                <a href="">3</a>
-                <a href="javascript:">></a>
+                <c:if test="${nowpage>1}">
+                    <a href="/BBS/page?param=${nowpage-1}"><</a>
+                </c:if>
+                <c:forEach var="page" begin="${nowpage-4>0?nowpage-4:1}" end="${pages}">
+                    <c:choose>
+                        <c:when test="${page==nowpage}">
+                            <a href="/BBS/page?param=${page}" class="on">${page}</a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="/BBS/page?param=${page}">${page}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+                <c:if test="${nowpage!=null and nowpage !=pages}">
+                    <a href="/BBS/page?param=${nowpage+1}">></a>
+                </c:if>
+                <input type="text" id="page" placeholder="页码" style="width: 80px;
+    height: 40px;text-indent: 20px;border: none;border-radius: 10px 0 10px 10px;float: left;">
+                <script>
+                    function choosepage() {
+
+                        window.location.href = "/BBS/page?param=" + $("#page").attr("value")
+                    }
+                </script>
+                <a href="javascript:void(0)" onclick="choosepage()">跳转</a>
+
             </div>
         </div>
     </div>
@@ -274,14 +153,40 @@
             <a href="" class="newMsg">发新帖</a>
             <div class="pwfb">
                 <div class="pwfbHead">
-                    拍王发布
+                    精品贴
                 </div>
-                <div class="pwfbCon"></div>
-                <div class="pwfbFooter"></div>
+                <div class="indexPublic_con">
+                    <ul class="jingping">
+                        <c:forEach items="${EssencePosts}" var="essencepost">
+                            <li>
+                                <a href="/BBS/post?param=${essencepost.getId()}">${essencepost.getTitle()}</a>
+                                <span style="float:right">${essencepost.getViews()}</span>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+            <div class="pwfb">
+                <div class="pwfbHead">
+                    置顶帖
+                </div>
+                <div class="indexPublic_con">
+                    <ul class="jingping">
+                        <c:forEach items="${TopPosts}" var="top">
+                            <li>
+                                <a href="/BBS/post?param=${top.getId()}">${top.getTitle()}</a>
+                                <span style="float:right">${top.getViews()}</span>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
             <div class="indexSearch">
-                <input type="text" placeholder="请输入关键词"/>
-                <input type="submit" value="搜索"/>
+                <form action="/BBS/page" method="post">
+                    <input type="hidden" name="method" value="1"/>
+                    <input type="text" name="content" placeholder="请输入关键词"/>
+                    <input type="submit" value="搜索"/>
+                </form>
             </div>
             <div class="indexPublic">
                 <div class="indexPublic_head">
@@ -289,33 +194,13 @@
                 </div>
                 <div class="indexPublic_con">
                     <ul class="weekHot">
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
-                        <li><a href="">关注上海车牌竞拍方面的资讯</a><span>29</span></li>
+                        <c:forEach var="hotpost" items="${HotPosts}">
+                            <li>
+                                <a href="/BBS/post?param=${hotpost.getId()}">${hotpost.getTitle()}</a>
+                                <span style="float:right">${hotpost.getViews()}</span></li>
+                        </c:forEach>
                     </ul>
                 </div>
-            </div>
-            <div class="indexPublic">
-                <div class="indexPublic_head">
-                    友情链接
-                </div>
-                <div class="indexPublic_con">
-                    <ul class="indexLink">
-                        <li><a href="">拍王淘宝链接</a></li>
-                        <li><a href="">拍王网站</a></li>
-                        <li><a href="">拍王助手</a></li>
-                        <li><a href="">沪牌模拟</a></li>
-                        <li><a href="">拍王合作咨询</a></li>
-                        <li><a href="">快法务</a></li>
-                        <li><a href="">国拍网</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="indexWxpublic">
-                <p>关注微信公众号</p>
             </div>
         </div>
     </div>

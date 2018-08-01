@@ -7,19 +7,32 @@
             <arg column="postid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="floor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="floorex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="replyer" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="replytime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
             <arg column="lastfloor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
     </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.Thorn.model.reply">
+        <constructor>
+            <arg column="postid" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="floor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="floorex" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="replyer" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="replytime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="lastfloor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR"/>
+        </constructor>
+    </resultMap>
+    <sql id="Blob_Column_List">
+        content
+    </sql>
     <insert id="insert" parameterType="com.Thorn.model.reply">
         insert into reply (postid, floor, floorex,
-        content, replyer, replytime,
-        lastfloor)
+        replyer, replytime, lastfloor,
+        content)
         values (#{postid,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{floorex,jdbcType=INTEGER},
-        #{content,jdbcType=VARCHAR}, #{replyer,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP},
-        #{lastfloor,jdbcType=INTEGER})
+        #{replyer,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP}, #{lastfloor,jdbcType=INTEGER},
+        #{content,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.Thorn.model.reply">
         insert into reply
@@ -33,9 +46,6 @@
             <if test="floorex != null">
                 floorex,
             </if>
-            <if test="content != null">
-                content,
-            </if>
             <if test="replyer != null">
                 replyer,
             </if>
@@ -44,6 +54,9 @@
             </if>
             <if test="lastfloor != null">
                 lastfloor,
+            </if>
+            <if test="content != null">
+                content,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -56,9 +69,6 @@
             <if test="floorex != null">
                 #{floorex,jdbcType=INTEGER},
             </if>
-            <if test="content != null">
-                #{content,jdbcType=VARCHAR},
-            </if>
             <if test="replyer != null">
                 #{replyer,jdbcType=VARCHAR},
             </if>
@@ -67,6 +77,9 @@
             </if>
             <if test="lastfloor != null">
                 #{lastfloor,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
             </if>
         </trim>
     </insert>

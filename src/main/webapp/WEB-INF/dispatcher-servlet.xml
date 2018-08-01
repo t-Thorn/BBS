@@ -22,10 +22,24 @@
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
     <!--打开注解-->
     <context:annotation-config/>
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <property name="dateFormat">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg type="java.lang.String"
+                                                 value="yyyy-MM-dd HH:mm:ss"/>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
     <!-- 自動掃描-->
     <context:component-scan base-package="com.Thorn"></context:component-scan>
-    <context:component-scan base-package="com.Thorn.dao"/>
     <!--消息转换器,提供JSON支持-->
     <bean id="messageAdapter"
           class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -94,6 +108,11 @@
 
     </mvc:interceptors>
 
+    <mvc:interceptors>
+
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"></bean>
+
+    </mvc:interceptors>
 
     <!-- 处理静态资源 -->
 

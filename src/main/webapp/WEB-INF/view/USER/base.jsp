@@ -28,9 +28,6 @@
 <body>
 <header class="zyHead">
     <div class="zyHead_cen">
-        <a href="">
-            <img src="/img/per-con.png" alt="" class="headPic1"/>
-        </a>
         <a href="" class="backIndex">返回首页</a>
         <!--未登入开始-->
         <!--<div class="ltForm">-->
@@ -59,23 +56,23 @@
     <div class="homeCen_left">
         <ul id="list">
             <li class="on">
-                <a href="/BBS/home" target="sub">我的主页</a>
+                <a href="/USER/home" target="sub">我的主页</a>
             </li>
             <li>
-                <a href="/BBS/setting" target="sub">信息更改</a>
+                <a href="/USER/setting" target="sub">信息更改</a>
             </li>
             <li>
-                <a href="/BBS/myWrite" target="sub">我的贴子</a>
+                <a href="/USER/myWrite" target="sub">我的贴子</a>
             </li>
             <li>
-                <a href="/BBS/myMsg" target="sub">我的回复</a>
+                <a href="/USER/myMsg" target="sub">我的回复</a>
             </li>
             <li>
-                <a href="/BBS/myAttention" target="sub">我的关注</a>
+                <a href="/USER/myAttention" target="sub">我的关注</a>
             </li>
         </ul>
     </div>
-    <iframe id="sub" class="homeCen_right" src="/BBS/home" width="500px" height="500px"
+    <iframe id="sub" class="homeCen_right" src="/USER/home" width="500px" height="500px"
             frameborder="0" name="sub" scrolling="no">
     </iframe>
 </div>

@@ -9,12 +9,34 @@
             <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="type" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="grade" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="posttime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="posttime" javaType="java.util.Date" jdbcType="VARCHAR"/>
             <arg column="postnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="lastposttime" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+            <arg column="lastposttime" javaType="java.util.Date" jdbcType="VARCHAR"/>
+            <arg column="views" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+        <association property="user" column="username"
+                     javaType="com.Thorn.model.user" foreignColumn="username">
+            <id property="username" column="username"/>
+            <result column="photo" property="photo"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="PostResultMapSimple" type="com.Thorn.model.post">
+        <constructor>
+            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="views" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
     </resultMap>
+
+    <resultMap id="PostResultMapSimple1" type="com.Thorn.model.post">
+        <constructor>
+            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <arg column="postnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        </constructor>
+    </resultMap>
+
     <insert id="insert" parameterType="com.Thorn.model.post">
         insert into post (id, title, username,
         type, grade, posttime,
@@ -25,6 +47,7 @@
         #{postnum,jdbcType=INTEGER}, #{lastposttime,jdbcType=TIMESTAMP}, #{views,jdbcType=INTEGER}
         )
     </insert>
+
     <insert id="insertSelective" parameterType="com.Thorn.model.post">
         insert into post
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,49 +109,30 @@
             </if>
         </trim>
     </insert>
-    <resultMap id="BaseResultMap" type="com.Thorn.model.post">
-        <constructor>
-            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <arg column="dob" javaType="java.util.Date" jdbcType="DATE"/>
-            <arg column="blog_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-        </constructor>
-    </resultMap>
-    <insert id="insert" parameterType="com.Thorn.model.post">
-        insert into post (id, content, dob,
-        blog_id)
-        values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{dob,jdbcType=DATE},
-        #{blogId,jdbcType=INTEGER})
-    </insert>
-    <insert id="insertSelective" parameterType="com.Thorn.model.post">
-        insert into post
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="content != null">
-                content,
-            </if>
-            <if test="dob != null">
-                dob,
-            </if>
-            <if test="blogId != null">
-                blog_id,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
-            <if test="content != null">
-                #{content,jdbcType=VARCHAR},
-            </if>
-            <if test="dob != null">
-                #{dob,jdbcType=DATE},
-            </if>
-            <if test="blogId != null">
-                #{blogId,jdbcType=INTEGER},
-            </if>
-        </trim>
-    </insert>
+
+    <select id="findPost" resultMap="BaseResultMap">
+        select *,u.photo from post p LEFT JOIN user u on p.username=u.username where title LIKE
+        "%"#{0}"%" order by posttime desc limit #{1},10
+    </select>
+
+    <select id="findEssencePost" resultMap="PostResultMapSimple">
+        select id,title,views from post where grade=1 or grade=3 AND
+        posttime>date_sub(posttime,interval 7 day)
+        order by posttime desc limit 0,5
+    </select>
+
+    <select id="getPostNum" resultType="java.lang.Integer" parameterType="string">
+        SELECT count(id) from post where title like "%"#{0}"%"
+    </select>
+
+    <select id="findHotPost" resultMap="PostResultMapSimple1">
+        SELECT id,title,postnum from post where posttime>date_sub(posttime,interval 7 day)
+        order by postnum desc limit 0,7
+    </select>
+
+    <select id="findTopPost" resultMap="PostResultMapSimple">
+        select id,title,views from post where grade>1 AND
+        posttime>date_sub(posttime,interval 7 day)
+        order by posttime desc limit 0,5
+    </select>
 </mapper>
