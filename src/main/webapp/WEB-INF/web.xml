@@ -105,7 +105,7 @@
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
-    <!-- start 添加拦截器
+    <!-- start 添加拦截器-->
     <filter>
         <filter-name>UserSessionFilter</filter-name>
         <filter-class>com.Thorn.service.UserSessionFilter</filter-class>
@@ -113,6 +113,6 @@
     <filter-mapping>
         <filter-name>UserSessionFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
     <!--  end 添加拦截器 -->
 </web-app>

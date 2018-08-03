@@ -47,12 +47,9 @@
 .ltForm ul li a{
     color: #fff;
 }
-.lt_login{
-    height: 60px;
-    float: right;
-    background: url("../img/loginMsg.png") no-repeat 0 center;
-}
+
 .lt_login ul{
+    float: right;
     margin-left: 30px;
 }
 .lt_login li{

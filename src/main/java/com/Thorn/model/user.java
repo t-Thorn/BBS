@@ -23,7 +23,16 @@ public class user {
 
     private Integer fans;
 
-    public user(String username, String password, String name, Integer age, String gender, String identity, Integer level, String photo, Date regdate, Integer fans) {
+    private Integer myPostnum;
+
+    public user(String username, String name, String photo, Integer myPostnum) {
+        this.username = username;
+        this.name = name;
+        this.photo = photo;
+        this.myPostnum = myPostnum;
+    }
+
+    public user(String username, String password, String name, Integer age, String gender, String identity, Integer level, String photo, Date regdate, Integer fans, Integer myPostnum) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -34,6 +43,16 @@ public class user {
         this.photo = photo;
         this.regdate = regdate;
         this.fans = fans;
+        this.myPostnum = myPostnum;
+    }
+
+    public Integer getMyPostnum() {
+
+        return myPostnum;
+    }
+
+    public void setMyPostnum(Integer myPostnum) {
+        this.myPostnum = myPostnum;
     }
 
     public user() {
@@ -119,4 +138,5 @@ public class user {
     public void setFans(Integer fans) {
         this.fans = fans;
     }
+
 }

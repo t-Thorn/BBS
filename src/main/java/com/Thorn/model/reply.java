@@ -17,6 +17,16 @@ public class reply {
 
     private String content;
 
+    private user user;
+
+    public com.Thorn.model.user getUser() {
+        return user;
+    }
+
+    public void setUser(com.Thorn.model.user user) {
+        this.user = user;
+    }
+
     public reply(Integer postid, Integer floor, Integer floorex, String replyer, Date replytime, Integer lastfloor, String content) {
         this.postid = postid;
         this.floor = floor;

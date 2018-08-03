@@ -26,6 +26,16 @@ public class post {
 
     private user user;
 
+    private Integer collectionnum;
+
+
+    public Integer getCollectionnum() {
+        return collectionnum;
+    }
+
+    public void setCollectionnum(Integer collectionnum) {
+        this.collectionnum = collectionnum;
+    }
 
     public com.Thorn.model.user getUser() {
         return user;
@@ -35,7 +45,7 @@ public class post {
         this.user = user;
     }
 
-    public post(Integer id, String title, String username, Integer type, Integer grade, Date posttime, Integer postnum, Date lastposttime, Integer views) {
+    public post(Integer id, String title, String username, Integer type, Integer grade, Date posttime, Integer postnum, Date lastposttime, Integer views, Integer collectionnum) {
         this.id = id;
         this.title = title;
         this.username = username;
@@ -45,6 +55,7 @@ public class post {
         this.postnum = postnum;
         this.lastposttime = lastposttime;
         this.views = views;
+        this.collectionnum = collectionnum;
     }
 
     public post() {

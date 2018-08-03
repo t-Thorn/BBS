@@ -1,5 +1,6 @@
 package com.Thorn.service;
 
+import com.Thorn.model.userWithBLOBs;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -8,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+
+import com.Thorn.model.userWithBLOBs;
 
 /**
  * 登录过滤
@@ -19,19 +22,23 @@ public class UserSessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // 不拦截的url
-        String[] notFilter = new String[]{"/BBS/", "/Login/"};
+        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/login", "user/reg"};
 
         // 请求的url
         String url = request.getRequestURI();
 
-        Object obj = request.getSession().getAttribute("user");
+        userWithBLOBs user = (userWithBLOBs) request.getSession().getAttribute("userSession");
+        Object obj = null;
+        if (user != null && user.getUsername() != null)
+            obj = user;
         if (null == obj) {
             boolean doFilter = chek(notFilter, url);
             if (doFilter) {
+
                 // 如果session中不存在登录者实体，则弹出框提示重新登录
                 PrintWriter out = response.getWriter();
                 //String loginPage = request.getContextPath()+"/index.jsp";
-                String loginPage = "/Login/index";
+                String loginPage = "/user/user";
                 StringBuilder builder = new StringBuilder();
                 builder.append("<script type=\"text/javascript\">");
                 builder.append("window.top.location.href='");
@@ -44,13 +51,13 @@ public class UserSessionFilter extends OncePerRequestFilter {
             }
         } else {
             //已登录不能返回这个页面
-            if (url.indexOf("/Login") == -1)
+            if (url.indexOf("/user/user") == -1)
                 filterChain.doFilter(request, response);
             else {
                 //返回BBS主页面
                 PrintWriter out = response.getWriter();
                 //String loginPage = request.getContextPath()+"/index.jsp";
-                String index = "/BBS/index";
+                String index = "/BBS/page";
                 StringBuilder builder = new StringBuilder();
                 builder.append("<script type=\"text/javascript\">");
                 builder.append("window.top.location.href='");
@@ -71,7 +78,10 @@ public class UserSessionFilter extends OncePerRequestFilter {
      */
     public boolean chek(String[] notFilter, String url) {
         //url以css和js结尾的不进行拦截
-        if (url.endsWith(".css") || url.endsWith(".js")) {
+        if (url.equals("/"))
+            return false;
+        if (url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".jpg") || url.endsWith("" +
+                ".png")) {
             return false;
         }
         //含有notFilter中的任何一个则不进行拦截

@@ -1,6 +1,7 @@
 package com.Thorn.dao;
 
 import com.Thorn.model.post;
+import com.Thorn.model.reply;
 
 import java.util.List;
 
@@ -18,4 +19,10 @@ public interface postMapper {
     List<post> findHotPost();
 
     List<post> findTopPost();
+
+    post findThePost(int id);
+
+    void updateViews(int id);
+
+    int findNewPostID();
 }

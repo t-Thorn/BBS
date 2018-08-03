@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/homeHead.css"/>
     <link rel="stylesheet" href="/css/homePublic.css"/>
     <link rel="stylesheet" href="/css/base.css"/>
-    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="/js/jquery-1.8.3.min.js"></script>
     <script>
         $(function () {
             $('li').click(function (e) {
@@ -66,9 +66,6 @@
             </li>
             <li>
                 <a href="/USER/myMsg" target="sub">我的回复</a>
-            </li>
-            <li>
-                <a href="/USER/myAttention" target="sub">我的关注</a>
             </li>
         </ul>
     </div>

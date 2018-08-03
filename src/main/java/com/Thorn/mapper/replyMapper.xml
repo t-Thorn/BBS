@@ -22,17 +22,20 @@
             <arg column="lastfloor" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="content" javaType="java.lang.String" jdbcType="LONGVARCHAR"/>
         </constructor>
+        <association property="user" column="replyer"
+                     javaType="com.Thorn.model.user" foreignColumn="username">
+            <id property="username" column="username"/>
+            <result column="name" property="name"/>
+            <result column="photo" property="photo"/>
+        </association>
     </resultMap>
     <sql id="Blob_Column_List">
         content
     </sql>
+
     <insert id="insert" parameterType="com.Thorn.model.reply">
-        insert into reply (postid, floor, floorex,
-        replyer, replytime, lastfloor,
-        content)
-        values (#{postid,jdbcType=INTEGER}, #{floor,jdbcType=INTEGER}, #{floorex,jdbcType=INTEGER},
-        #{replyer,jdbcType=VARCHAR}, #{replytime,jdbcType=TIMESTAMP}, #{lastfloor,jdbcType=INTEGER},
-        #{content,jdbcType=LONGVARCHAR})
+        insert into reply (postid, floor,replyer, replytime, content)
+        values (#{postid}, #{floor},#{replyer}, #{replytime}, #{content})
     </insert>
     <insert id="insertSelective" parameterType="com.Thorn.model.reply">
         insert into reply
@@ -83,4 +86,23 @@
             </if>
         </trim>
     </insert>
+
+    <select id="getReplyTop" resultMap="ResultMapWithBLOBs" parameterType="int">
+        SELECT r.*,u.name,u.photo from reply r LEFT JOIN user u on r.replyer=u.username where
+        postid =#{0} and floorex=-1 and floor!=0 ORDER BY floor limit #{1},8
+    </select>
+
+    <select id="getReplySub" resultMap="ResultMapWithBLOBs" parameterType="int">
+        SELECT r.*,u.name,u.photo from reply r LEFT JOIN user u on r.replyer=u.username where
+        postid =#{0} and floorex!=-1 and floor &lt;= #{1} ORDER BY floor ,floorex
+    </select>
+
+    <select id="getReplyNum" resultType="java.lang.Integer" parameterType="int">
+        SELECT count(postid) from reply where postid=#{0} and floorex=-1
+    </select>
+
+    <select id="getTop" resultMap="ResultMapWithBLOBs" parameterType="int">
+        SELECT r.*,u.name,u.photo from reply r LEFT JOIN user u on r.replyer=u.username where
+        postid =#{0} and floor=0;
+    </select>
 </mapper>

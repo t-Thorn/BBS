@@ -27,7 +27,6 @@ public class BBSController {
                           @ModelAttribute("content") String content
             , @ModelAttribute("pages") int pages, Model model) {
         //ModelAndView modelAndView=new ModelAndView();
-        //logger.info("page:"+pages+" param:"+param);
         //logger.warn(postMapper.findPost(content, (param - 1) * 10).get(0).getPosttime());
         if (pages == 0) {
             return "/BBS/index";

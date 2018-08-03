@@ -13,10 +13,12 @@
             <arg column="postnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="lastposttime" javaType="java.util.Date" jdbcType="VARCHAR"/>
             <arg column="views" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+            <arg column="collectionnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
         <association property="user" column="username"
                      javaType="com.Thorn.model.user" foreignColumn="username">
             <id property="username" column="username"/>
+            <result column="name" property="name"/>
             <result column="photo" property="photo"/>
         </association>
     </resultMap>
@@ -38,14 +40,9 @@
     </resultMap>
 
     <insert id="insert" parameterType="com.Thorn.model.post">
-        insert into post (id, title, username,
-        type, grade, posttime,
-        postnum, lastposttime, views
-        )
-        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
-        #{type,jdbcType=INTEGER}, #{grade,jdbcType=INTEGER}, #{posttime,jdbcType=TIMESTAMP},
-        #{postnum,jdbcType=INTEGER}, #{lastposttime,jdbcType=TIMESTAMP}, #{views,jdbcType=INTEGER}
-        )
+        insert into post (title, username,type, posttime,lastposttime)
+        values (#{title}, #{username},#{type}, #{posttime},#{lastposttime}
+        );
     </insert>
 
     <insert id="insertSelective" parameterType="com.Thorn.model.post">
@@ -111,8 +108,8 @@
     </insert>
 
     <select id="findPost" resultMap="BaseResultMap">
-        select *,u.photo from post p LEFT JOIN user u on p.username=u.username where title LIKE
-        "%"#{0}"%" order by posttime desc limit #{1},10
+        select p.*,u.photo,u.name from post p LEFT JOIN user u on p.username=u.username where title
+        LIKE "%"#{0}"%" order by posttime desc limit #{1},10
     </select>
 
     <select id="findEssencePost" resultMap="PostResultMapSimple">
@@ -134,5 +131,17 @@
         select id,title,views from post where grade>1 AND
         posttime>date_sub(posttime,interval 7 day)
         order by posttime desc limit 0,5
+    </select>
+
+    <select id="findThePost" resultMap="BaseResultMap" parameterType="int">
+        select p.*,u.photo,u.name from post p LEFT JOIN user u on p.username=u.username where
+        id=#{0}
+    </select>
+
+    <select id="updateViews" parameterType="int">
+        update post set views=views+1 where id=#{0}
+    </select>
+    <select id="findNewPostID" resultType="java.lang.Integer">
+        SELECT max(id) from post;
     </select>
 </mapper>

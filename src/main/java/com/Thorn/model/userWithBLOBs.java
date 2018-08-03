@@ -9,8 +9,10 @@ public class userWithBLOBs extends user {
 
     private String collections;
 
-    public userWithBLOBs(String username, String password, String name, Integer age, String gender, String identity, Integer level, String photo, Date regdate, Integer fans, String attention, String history, String collections) {
-        super(username, password, name, age, gender, identity, level, photo, regdate, fans);
+    public userWithBLOBs(String username, String password, String name, Integer age, String
+            gender, String identity, Integer level, String photo, Date regdate, Integer fans,
+                         Integer myPostnum, String attention, String history, String collections) {
+        super(username, password, name, age, gender, identity, level, photo, regdate, fans, myPostnum);
         this.attention = attention;
         this.history = history;
         this.collections = collections;

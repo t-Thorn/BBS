@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -17,39 +18,43 @@
 </c:if>
 <header class="ltHead">
     <div class="ltHead_cen">
+        <ul class="headNav">
+            <li><a href="/BBS/page?method=1" onclick="clear()" style="padding: 0 6px;border: 1px  solid
+            white; border-radius: 5px;">首页
+            </a></li>
+        </ul>
         <!--未登入开始-->
-        <div class="ltForm appear">
-            <a href=""><img src="/img/indexForm_bg.png" alt="" class="headPic2"/></a>
-            <ul>
-                <li><a href="">登入</a></li>
-                <li><a href="">注册</a></li>
-            </ul>
-        </div>
-        <!-- 未登入结束-->
-        <!-- 登入开始，未登入时以下隐藏-->
-        <!--<div class="lt_login appear">-->
-        <!--<ul>-->
-        <!--<li><a href="">花开花落</a></li>-->
-        <!--<li><a href="">退出</a></li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!-- 登入结束-->
-        <div class="navFix">
-            <!--登入开始-->
-            <a href="" class="navMe">花花</a>
-            <!--登入结束-->
-            <!--未登入开始-->
-            <!--<a href="" class="navLogin">登录</a>-->
-            <!--未登入结束-->
-            <a href="" class="navWrite">发新帖</a>
-        </div>
+        <c:choose>
+            <c:when test="${userSession.getUsername()==null}">
+                <div class="ltForm appear">
+                    <a href=""><img src="/img/indexForm_bg.png" alt="" class="headPic2"/></a>
+                    <ul>
+                        <li><a href="/user/user">登入</a></li>
+                    </ul>
+                </div>
+                <div class="navFix">
+                    <a href="" class="navLogin">登录</a>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="lt_login appear">
+                    <ul>
+                        <li><a href="">${userSession.getName()}</a></li>
+                        <li><a href="">退出</a></li>
+                    </ul>
+                </div>
+                <div class="navFix">
+                    <a href="javascript:void(0)" class="navLogin">${userSession.getName()}</a>
+                </div>
+            </c:otherwise>
+        </c:choose>
     </div>
 </header>
 <div class="indexMain">
     <div class="indexMain_left">
         <div class="indexMain_left_btn">
             <ul>
-                <li><a href="javascript:" class="on">最新</a></li>
+                <li><a href="javascript:void(0)" class="on">最新</a></li>
             </ul>
         </div>
         <div class="indexMain_left_con">
@@ -65,6 +70,12 @@
                                 <c:when test="${post.getType() eq '1'}">
                                     <div class="indexCon_msg_detail_tittle_help">
                                         <span>求助</span>
+                                        <c:if test="${post.getGrade() eq '1' or post.getGrade()
+                                        eq'3'}">
+                                        <span
+                                                style="border: 1px solid lawngreen;color: lawngreen">精华
+                                        </span>
+                                        </c:if>
                                         <p>${post.getTitle()}
                                         </p>
                                     </div>
@@ -72,6 +83,12 @@
                                 <c:when test="${post.getType() eq '2'}">
                                     <div class="indexCon_msg_detail_tittle_exp">
                                         <span>经验</span>
+                                        <c:if test="${post.getGrade() eq '1' or post.getGrade()
+                                        eq'3'}">
+                                        <span
+                                                style="border: 1px solid lawngreen;color: lawngreen">精华
+                                        </span>
+                                        </c:if>
                                         <p>${post.getTitle()}
                                         </p>
                                     </div>
@@ -79,6 +96,12 @@
                                 <c:when test="${post.getType() eq '3'}">
                                     <div class="indexCon_msg_detail_tittle_chat">
                                         <span>闲聊</span>
+                                        <c:if test="${post.getGrade() eq '1' or post.getGrade()
+                                        eq'3'}">
+                                        <span
+                                                style="border: 1px solid lawngreen;color: lawngreen">精华
+                                        </span>
+                                        </c:if>
                                         <p>${post.getTitle()}
                                         </p>
                                     </div>
@@ -86,6 +109,12 @@
                                 <c:when test="${post.getType() eq '0'}">
                                     <div class="indexCon_msg_detail_tittle_common">
                                         <span>正常</span>
+                                        <c:if test="${post.getGrade() eq '1' or post.getGrade()
+                                        eq'3'}">
+                                        <span
+                                                style="border: 1px solid lawngreen;color: lawngreen">精华
+                                        </span>
+                                        </c:if>
                                         <p onclick="/BBS/post?param=${post.getId()}">
                                                 ${post.getTitle()}
                                         </p>
@@ -100,7 +129,7 @@
                         </div>-->
                         <div class="indexCon_msg_detail_other">
                             <ul>
-                                <li>${post.getUsername()}</li>
+                                <li>${post.getUser().getName()}</li>
                                 <li>
                                     <fmt:formatDate value="${post.getPosttime()}"
                                                     pattern="yyyy-MM-dd HH:mm"/>
@@ -150,7 +179,7 @@
     </div>
     <div class="indexMain_right">
         <div class="indexMain_rightCon">
-            <a href="" class="newMsg">发新帖</a>
+            <a href="/Post/new" class="newMsg">发新帖</a>
             <div class="pwfb">
                 <div class="pwfbHead">
                     精品贴

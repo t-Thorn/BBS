@@ -551,7 +551,7 @@ body{
     padding-top: 18px;
 }
 .tzCollect{
-    width: 135px;
+    width: 145px;
     height: 46px;
     border-radius: 5px;
     box-shadow: 0 0 10px #999;
@@ -568,7 +568,16 @@ body{
     cursor: pointer;
     background: url("../img/tzCollect.png") no-repeat 15px center;
 }
-.tzCollect_left.on{
+
+.tzCollect_left_on {
+    width: 100px;
+    height: 46px;
+    float: left;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    line-height: 46px;
+    cursor: pointer;
     background: url("../img/tzCollect_hover.png") no-repeat 15px center;
 }
 .newPending{
@@ -669,6 +678,13 @@ body{
     margin-top: 12px;
     display: none;
 }
+
+.pendDetail_action p {
+    width: 30%;
+    height: 30px;
+    font-size: 20px;
+    border: none;
+}
 .pendDetail_action input[type=text]{
     width: 100%;
     height: 35px;
@@ -696,21 +712,14 @@ body{
     background-color: #f2f2f2;
     color: #333;
 }
-.pendDetail_btn li:nth-child(1){
-    background: url("../img/zan.png") no-repeat 0 center;
-}
 .replayBtn{
     background: url("../img/replayL.png") no-repeat 0 center;
 }
 .delateBtn{
     background: url("../img/delate.png") no-repeat 0 center;
 }
-.pendDetail_btn li.on{
-    background: url("../img/zan_hover.png") no-repeat 0 center;
-    color: #e43e20;
-}
 .pendDetail_replayCon{
-    width: 615px;
+    width: 90%;
     min-height: 30px;
     box-sizing: border-box;
     padding-left: 10px;
@@ -721,8 +730,25 @@ body{
     margin-bottom: 10px;
 }
 .pendDetail_replayCon p{
+    float: left;
     font-size: 14px;
     color: #333;
+    line-height: 30px;
+}
+
+.pendDetail_replayCon a {
+    margin-right: 10px;
+    float: right;
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+}
+
+.pendDetail_replayCon a:hover {
+    margin-right: 10px;
+    float: right;
+    font-size: 14px;
+    color: red;
     line-height: 30px;
 }
 .pendPic img{
@@ -744,7 +770,7 @@ body{
 .writePending{
     box-sizing: border-box;
     width: 100%;
-    height: 155px;
+    height: 400px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 0 10px #999;
@@ -752,13 +778,12 @@ body{
     padding-top: 15px;
 }
 .writePending_con{
-    margin-top: 25px;
     width: 750px;
     height: 45px;
     margin-left: 15px;
 }
 .writePending_con input[type=text]{
-    width: 645px;
+    width: 100%;
     height: 45px;
     background-color: #f2f2f2;
     border: none;
@@ -766,10 +791,11 @@ body{
     text-indent: 20px;
     float: left;
 }
-.writePending_con input[type=submit]{
+
+.writePending_con button {
+    margin-top: 10px;
     width: 90px;
     height: 45px;
-    float: right;
     border: none;
     background-color: #e43e20;
     color: #fff;
@@ -780,7 +806,7 @@ body{
     height: 320px;
     border-radius: 10px;
     box-shadow: 0 0 10px #999;
-    margin-top: 14px;
+
     background-color: #fff;
 }
 .myMsg_con{
@@ -813,10 +839,10 @@ body{
     border-radius: 0 0 10px 10px;
 }
 .myMsg_footer ul{
-    margin-left: 45px;
+
 }
 .myMsg_footer li{
-    width: 100px;
+    width: 100%;
     height: 60px;
     float: left;
     font-size: 14px;
