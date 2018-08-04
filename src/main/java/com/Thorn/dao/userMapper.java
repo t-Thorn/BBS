@@ -7,36 +7,44 @@ import java.util.List;
 
 public interface userMapper {
     int insert(userWithBLOBs record);
-
-    int insertSelective(userWithBLOBs record);
-
     user getSimpleInfo(String username);
+    userWithBLOBs login(String username);
 
-    List<user> findAllUser();
+    void updateHistory(userWithBLOBs userWithBLOBs);
+
+    void updateMyPostnum(userWithBLOBs user);
+
+    void updateCollections(userWithBLOBs user);
+
+    List<userWithBLOBs> findAllUser();
 
     user findOneUser(int id);
 
     int deleteUser(int userId);
 
-    int InsertUser(user user);
+    int InsertUser(userWithBLOBs user);
 
-    userWithBLOBs login(String username);
+    int updateUser(userWithBLOBs user);
 
-    int updateUser(user user);
+    int updatePwd(userWithBLOBs user);
 
-    int updatePwd(user user);
+    int updatePhoto(userWithBLOBs user);
 
-    int updatePhoto(user user);
+    List<userWithBLOBs> getUserByPage(int i, int j);
 
-    List<user> getUserByPage(int i, int j);
+    List<userWithBLOBs> getUserByPageName(String name, int i, int j);
 
-    void updateHistory(userWithBLOBs userWithBLOBs);
+    List<userWithBLOBs> findusername(String username);
 
-    List<user> findoneID(String idenity);
+    List<userWithBLOBs> findsomeUser(String username);
 
-    List<user> findusername(String username);
+    int updatePostnum(String username);
 
-    void updateMyPostnum(userWithBLOBs user);
+    int deleteUser(String username);
 
-    void updateCollections(userWithBLOBs user);
+    List<userWithBLOBs> findoneID(String idenity);
+
+    List<userWithBLOBs> findoneIDAndName(String name, String idenity);
+
+    int updateCollect(String Collect, String username);
 }

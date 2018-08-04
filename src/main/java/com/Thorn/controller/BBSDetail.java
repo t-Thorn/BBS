@@ -5,7 +5,6 @@ import com.Thorn.dao.replyMapper;
 import com.Thorn.dao.userMapper;
 import com.Thorn.model.reply;
 import com.Thorn.model.userWithBLOBs;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -31,24 +29,55 @@ public class BBSDetail {
 
     @RequestMapping("/BBS/post")
     public String getdetail(@RequestParam(defaultValue = "1") int param, Model model,
-                            @RequestParam(required = false, defaultValue = "1") int param1
+                            @RequestParam(required = false, defaultValue = "1") int param1,
+                            @RequestParam(value = "refloor", defaultValue = "-1", required = false)
+                                    int refloor, @RequestParam(defaultValue = "1") String test
     ) {
         //获取回复
-        List<reply> top = replyMapper.getReplyTop(param, (param1 - 1) * 8);
-        List<reply> sub = replyMapper.getReplySub(param, param1 * 8);
         reply firstReply = replyMapper.getTop(param);
-        int pages = replyMapper.getReplyNum(param);
-        if (pages > 0)
-            pages /= 8;
-        if (pages == 0)
-            pages++;
         model.addAttribute("firstReply", firstReply);
-        model.addAttribute("top", top);
-        model.addAttribute("sub", sub);
-        model.addAttribute("nowpage", param1);
-        logger.info(param1);
+        int pages = replyMapper.getReplyNum(param);
+
+        int maxfloor = 0;
+        if (pages == 1)
+            pages++;
+        //获取最后的位置
+        maxfloor = pages;
+        pages--;
+        int p = pages;
+        pages /= 8;
+        if (p % 8 != 0)
+            pages++;
+
+        //
+        if (refloor != -1) {
+            if (refloor == 1)
+                refloor++;
+            model.addAttribute("refloor", refloor);
+            refloor--;
+            p = refloor;
+            refloor /= 8;
+            if (p % 8 != 0)
+                refloor++;
+            model.addAttribute("nowpage", refloor);
+            List<reply> top = replyMapper.getReplyTop(param, (pages - 1) * 8);
+            if (top.size() > 0) {
+                int lastfloor = top.get(top.size() - 1).getFloor();
+                List<reply> sub = replyMapper.getReplySub(param, lastfloor);
+                model.addAttribute("sub", sub);
+            }
+            model.addAttribute("top", top);
+        } else {
+            model.addAttribute("nowpage", param1);
+            List<reply> top = replyMapper.getReplyTop(param, (param1 - 1) * 8);
+            if (top.size() > 0) {
+                int lastfloor = top.get(top.size() - 1).getFloor();
+                List<reply> sub = replyMapper.getReplySub(param, lastfloor);
+                model.addAttribute("sub", sub);
+            }
+            model.addAttribute("top", top);
+        }
         model.addAttribute("pages", pages);
-        logger.info(pages);
         return "BBS/tiezi";
     }
 
@@ -73,10 +102,8 @@ public class BBSDetail {
                 int iscollection = iscollection(historys, param);
                 if (historys.length < 30) {
                     if (iscollection == -1) {
-                        logger.info("不包含");
                         user.setHistory(user.getHistory() + ";" + param);
                     } else {
-                        logger.info("包含");
                         //已经包含这个浏览纪录,则更新
                         StringBuilder newHistorys = new StringBuilder("");
                         for (int index = 0; index < historys.length; index++) {

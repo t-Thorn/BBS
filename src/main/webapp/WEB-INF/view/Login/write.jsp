@@ -51,7 +51,7 @@
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
+        <a href=""><img src="/img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
             <li><a href="">首页</a></li>
         </ul>
@@ -69,8 +69,8 @@
             <c:otherwise>
                 <div class="lt_login">
                     <ul>
-                        <li><a href="">${userSession.getName()}</a></li>
-                        <li><a href="">退出</a></li>
+                        <li><a href="/myinform">${userSession.getName()}</a></li>
+                        <li><a href="/user/out">退出</a></li>
                     </ul>
                 </div>
             </c:otherwise>

@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.Thorn.model.userWithBLOBs;
-
 /**
  * 登录过滤
  */
@@ -22,7 +20,8 @@ public class UserSessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // 不拦截的url
-        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/login", "user/reg"};
+        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/login",
+                "user/reg", "Home"};
 
         // 请求的url
         String url = request.getRequestURI();

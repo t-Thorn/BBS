@@ -672,6 +672,18 @@ body{
     color: #999;
     cursor: pointer;
 }
+
+.pendDetail_btn input {
+    border: 0px;
+    outline: none;
+    float: left;
+    height: 30px;
+    margin-right: 20px;
+    line-height: 30px;
+    text-indent: 17px;
+    color: #999;
+    cursor: pointer;
+}
 .pendDetail_action{
     width: 615px;
     height: 80px;

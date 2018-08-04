@@ -18,6 +18,7 @@
 
         </constructor>
     </resultMap>
+
     <resultMap id="ResultMapWithBLOBs" type="com.Thorn.model.userWithBLOBs">
         <constructor>
             <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -48,7 +49,6 @@
         </constructor>
     </resultMap>
 
-
     <insert id="insert" parameterType="com.Thorn.model.userWithBLOBs">
         insert into user (username, password, name,
         age, gender, identity,
@@ -62,92 +62,6 @@
         #{fans,jdbcType=INTEGER}, #{attention,jdbcType=LONGVARCHAR},
         #{history,jdbcType=LONGVARCHAR},
         #{collections,jdbcType=LONGVARCHAR})
-    </insert>
-
-    <insert id="insertSelective" parameterType="com.Thorn.model.userWithBLOBs">
-        insert into user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="username != null">
-                username,
-            </if>
-            <if test="password != null">
-                password,
-            </if>
-            <if test="name != null">
-                name,
-            </if>
-            <if test="age != null">
-                age,
-            </if>
-            <if test="gender != null">
-                gender,
-            </if>
-            <if test="identity != null">
-                identity,
-            </if>
-            <if test="level != null">
-                level,
-            </if>
-            <if test="photo != null">
-                photo,
-            </if>
-            <if test="regdate != null">
-                regdate,
-            </if>
-            <if test="fans != null">
-                fans,
-            </if>
-            <if test="attention != null">
-                attention,
-            </if>
-            <if test="history != null">
-                history,
-            </if>
-            <if test="collections != null">
-                collections,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="username != null">
-                #{username,jdbcType=VARCHAR},
-            </if>
-            <if test="password != null">
-                #{password,jdbcType=VARCHAR},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
-            </if>
-            <if test="age != null">
-                #{age,jdbcType=INTEGER},
-            </if>
-            <if test="gender != null">
-                #{gender,jdbcType=VARCHAR},
-            </if>
-            <if test="identity != null">
-                #{identity,jdbcType=VARCHAR},
-            </if>
-            <if test="level != null">
-                #{level,jdbcType=INTEGER},
-            </if>
-            <if test="photo != null">
-                #{photo,jdbcType=VARCHAR},
-            </if>
-            <if test="regdate != null">
-                #{regdate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="fans != null">
-                #{fans,jdbcType=INTEGER},
-            </if>
-            <if test="attention != null">
-                #{attention,jdbcType=LONGVARCHAR},
-            </if>
-            <if test="history != null">
-                #{history,jdbcType=LONGVARCHAR},
-            </if>
-            <if test="collections != null">
-                #{collections,jdbcType=LONGVARCHAR},
-            </if>
-        </trim>
     </insert>
 
     <select id="getSimpleInfo" resultMap="SimpleInfo" parameterType="string">
@@ -171,48 +85,13 @@
         <result column="collections" property="collections"/>
     </resultMap>
 
-    <insert id="InsertUser" parameterType="com.Thorn.model.user" useGeneratedKeys="true"
-            keyProperty="id">
-        insert into user(username,password,identity,regdate,name)
-        values(#{username},#{password},#{identity},#{regdate},#{name})
-    </insert>
-
-    <select id="findAllUser" resultMap="ResultMapWithBLOBs" parameterType="com.Thorn.model.user">
-        select * from user
-    </select>
-
     <select id="login" resultMap="ResultMapWithBLOBs" parameterType="String">
         select * from user where username=#{username}
-    </select>
-
-
-    <update id="updateUser" parameterType="com.Thorn.model.user">
-        update user set name=#{name},age=#{age},identity=#{identity},gender=#{gender} where username=#{username}
-    </update>
-
-    <update id="updatePwd" parameterType="com.Thorn.model.user">
-        update user set password=#{password} where username=#{username}
-    </update>
-
-    <update id="updatePhoto" parameterType="com.Thorn.model.user">
-        update user set photo=#{photo} where username=#{username}
-    </update>
-
-    <select id="getUserByPage" resultType="com.Thorn.model.user">
-        select * from user limit #{0},#{1}
     </select>
 
     <update id="updateHistory" parameterType="com.Thorn.model.userWithBLOBs">
         update user set history=#{history} where username=#{username}
     </update>
-
-    <select id="findoneID" resultType="com.Thorn.model.user">
-        select * from user where identity=#{identity}
-    </select>
-
-    <select id="findusername" resultMap="BaseResultMap" parameterType="String">
-        select * from user where username=#{username}
-    </select>
 
     <update id="updateMyPostnum" parameterType="com.Thorn.model.userWithBLOBs">
         update user set myPostnum=#{myPostnum} where username=#{username}
@@ -220,5 +99,64 @@
 
     <update id="updateCollections" parameterType="com.Thorn.model.userWithBLOBs">
         update user set collections=#{collections} where username=#{username}
+    </update>
+
+    <insert id="InsertUser" parameterType="com.Thorn.model.userWithBLOBs" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into user(username,password,identity) values(#{username},#{password},#{identity})
+    </insert>
+
+    <select id="findAllUser" resultMap="ResultMapWithBLOBs"
+            parameterType="com.Thorn.model.userWithBLOBs">
+        select * from user where level!=0
+    </select>
+
+    <select id="findsomeUser" resultMap="ResultMapWithBLOBs"
+            parameterType="com.Thorn.model.userWithBLOBs">
+        select * from user where name like #{name}
+    </select>
+
+    <select id="findusername" resultMap="ResultMapWithBLOBs" parameterType="String">
+        select * from user where username=#{username}
+    </select>
+
+    <update id="updateUser" parameterType="com.Thorn.model.userWithBLOBs">
+        update user set name=#{name},age=#{age},identity=#{identity},gender=#{gender} where username=#{username}
+    </update>
+
+    <update id="updatePwd" parameterType="com.Thorn.model.userWithBLOBs">
+        update user set password=#{password} where username=#{username}
+    </update>
+
+    <update id="updatePhoto" parameterType="com.Thorn.model.userWithBLOBs">
+        update user set photo=#{photo} where username=#{username}
+    </update>
+
+    <select id="getUserByPage" resultType="com.Thorn.model.userWithBLOBs">
+        select * from user where level!=0 limit #{0},#{1}
+    </select>
+
+    <select id="getUserByPageName" resultType="com.Thorn.model.userWithBLOBs">
+        select * from user where name like #{0} limit #{1},#{2}
+    </select>
+
+    <select id="findoneID" resultType="com.Thorn.model.userWithBLOBs">
+        select * from user where identity=#{identity}
+    </select>
+
+    <select id="findoneIDAndName" resultType="com.Thorn.model.userWithBLOBs">
+        select * from user where name!=#{0} and identity=#{1}
+    </select>
+
+    <update id="deleteUser" parameterType="com.Thorn.model.userWithBLOBs">
+        delete from user where username=#{username}
+    </update>
+
+    <update id="updatePostnum" parameterType="com.Thorn.model.userWithBLOBs">
+        UPDATE USER SET mypostnum=mypostnum-1 WHERE username=#{username}
+    </update>
+
+    <update id="updateCollect" parameterType="com.Thorn.model.userWithBLOBs">
+        UPDATE USER SET collections=#{0} WHERE username=#{1}
     </update>
 </mapper>

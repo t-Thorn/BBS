@@ -1,8 +1,5 @@
 package com.Thorn.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.util.Date;
 
 public class post {
@@ -97,7 +94,15 @@ public class post {
         return type;
     }
 
+    public post(Integer id, String title, Integer postnum, Integer views) {
+        this.id = id;
+        this.title = title;
+        this.postnum = postnum;
+        this.views = views;
+    }
+
     public void setType(Integer type) {
+
         this.type = type;
     }
 

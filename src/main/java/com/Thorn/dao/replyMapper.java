@@ -16,4 +16,22 @@ public interface replyMapper {
     int getReplyNum(int id);
 
     reply getTop(int id);
+
+    void newreply(reply reply);
+
+    void delreply(reply reply);
+
+    int getTheSubReplyNum(reply reply);
+
+    void newSubReply(reply reply);
+
+    void addlastfloor(int postid, int floor, int floorex);
+
+    String findTheParentReplyer(reply reply);
+
+    void delSubReply(reply reply);
+
+    int getMaxReplyNum(int id);
+
+
 }

@@ -13,9 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-//@todo:新增回复和楼中楼
-//todo:删除回复
 @Controller
 @SessionAttributes("userSession")
 public class PostController {
@@ -66,15 +66,46 @@ public class PostController {
         return "redirect:/BBS/post";
     }
 
+
     @PostMapping("/Post/newreply")
-    public String newReply(@ModelAttribute("newreply") reply reply) {
-        return "";
+    public String newReply(@ModelAttribute("newreply") reply reply, @ModelAttribute("userSession")
+            userWithBLOBs user, Model model) {
+        //新增回复
+        reply.setReplytime(new Date());
+        reply.setReplyer(user.getUsername());
+        replyMapper.newreply(reply);
+
+        //更新贴主的
+        // replyMapper.addlastfloor(reply.getPostid(),0,-1);
+
+        //更新帖子回复数
+        postmapper.addPostnum(reply.getPostid());
+        //传参
+        model.addAttribute("test", "test1");
+        //model.addAttribute("pages",pages);
+        return "redirect:/BBS/post?param=" + reply.getPostid() + "&refloor=" + replyMapper.getMaxReplyNum(
+                reply.getPostid());
+    }
+
+    @PostMapping("/Post/delreply")
+    public String delReply(@ModelAttribute("delreply") reply reply, @ModelAttribute("userSession")
+            userWithBLOBs user, Model model) {
+        //新增回复
+        replyMapper.delreply(reply);
+
+        //更新帖子回复数
+        postmapper.subPostnum(reply.getPostid());
+        //model.addAttribute("pages",pages);
+        return "redirect:/BBS/post?param=" + reply.getPostid();
     }
 
     @PostMapping(value = "/Post/iscollection")
-    public @ResponseBody
-    String collection(int postid, int method, @ModelAttribute
+    @ResponseBody
+    public Map<String, Integer> collection(int postid, int method, @ModelAttribute
             ("userSession") userWithBLOBs user, Model model) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        if (user == null || user.getUsername() == null)
+            return map;
         logger.info("postid:" + postid);
         String[] collections = new String[]{""};
         if (user.getCollections() != null && !user.getCollections().equals("")) {
@@ -86,15 +117,18 @@ public class PostController {
             if (!collections[0].equals("")) {
                 for (String collection : collections) {
                     if (collection.equals(String.valueOf(postid))) {
-                        logger.info("已收藏");
-                        return "1";
+                        map.put("status", 1);
+                        map.put("num", -1);
+                        return map;
                     }
                 }
-                logger.info("未收藏");
-                return "0";
+                map.put("status", 0);
+                map.put("num", -1);
+                return map;
             }
-            logger.info("未收藏1");
-            return "0";
+            map.put("status", 0);
+            map.put("num", -1);
+            return map;
         } else {
             //收藏/取消收藏
             String newcollections = "";
@@ -105,8 +139,11 @@ public class PostController {
                     logger.info("newcollections:" + newcollections);
                     user.setCollections(newcollections);
                     userMapper.updateCollections(user);
+                    postmapper.subCollectionNum(postid);
                     model.addAttribute(user);
-                    return "0";
+                    map.put("status", 0);
+                    map.put("num", postmapper.findThePost(postid).getCollectionnum());
+                    return map;
                 }
             }
             //收藏
@@ -114,8 +151,11 @@ public class PostController {
             logger.info("newcollections:" + newcollections);
             user.setCollections(newcollections);
             userMapper.updateCollections(user);
+            postmapper.addCollectionNum(postid);
             model.addAttribute(user);
-            return "1";
+            map.put("status", 1);
+            map.put("num", postmapper.findThePost(postid).getCollectionnum());
+            return map;
         }
     }
 
@@ -130,5 +170,46 @@ public class PostController {
         if (!newcollection.equals(""))
             stringBuilder.append(newcollection);
         return stringBuilder.toString();
+    }
+
+    @PostMapping(value = "/Post/subreply")
+    @ResponseBody
+    public Map<String, Object> subreply(@RequestParam(value = "postid", defaultValue = "-1") int postid,
+                                        @RequestParam(value = "floor", defaultValue = "-1") int floor,
+                                        @RequestParam(value = "floorex", defaultValue = "-1") int floorex,
+                                        @RequestParam(value = "content", defaultValue = "") String content,
+                                        @ModelAttribute("userSession") userWithBLOBs user) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("content", "");
+        if (user != null && user.getUsername() != null) {
+            reply reply = new reply();
+            reply.setPostid(postid);
+            reply.setFloor(floor);
+            if (floorex == -1) {
+                //新增回复
+                reply.setReplyer(user.getUsername());
+                reply.setReplytime(new Date());
+                reply.setContent(content);
+                int nowfloorex = replyMapper.getTheSubReplyNum(reply);
+                nowfloorex++;
+                reply.setFloorex(nowfloorex);
+                replyMapper.newSubReply(reply);
+                result.put("content", reply.getContent());
+                String parentReplyer = userMapper.getSimpleInfo(replyMapper.findTheParentReplyer
+                        (reply)).getName();
+                result.put("parentreplyer", parentReplyer);
+                result.put("replyer", reply.getReplyer());
+                result.put("floorex", nowfloorex);
+                logger.info(reply.toString());
+                return result;
+            } else {
+                //删除回复
+                reply.setFloorex(floorex);
+                replyMapper.delSubReply(reply);
+                result.put("content", "ok");
+                return result;
+            }
+        }
+        return result;
     }
 }

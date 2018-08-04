@@ -28,13 +28,6 @@
             <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
             <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="views" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-        </constructor>
-    </resultMap>
-
-    <resultMap id="PostResultMapSimple1" type="com.Thorn.model.post">
-        <constructor>
-            <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
-            <arg column="title" javaType="java.lang.String" jdbcType="VARCHAR"/>
             <arg column="postnum" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         </constructor>
     </resultMap>
@@ -113,7 +106,7 @@
     </select>
 
     <select id="findEssencePost" resultMap="PostResultMapSimple">
-        select id,title,views from post where grade=1 or grade=3 AND
+        select id,title,views,postnum from post where grade=1 or grade=3 AND
         posttime>date_sub(posttime,interval 7 day)
         order by posttime desc limit 0,5
     </select>
@@ -122,13 +115,13 @@
         SELECT count(id) from post where title like "%"#{0}"%"
     </select>
 
-    <select id="findHotPost" resultMap="PostResultMapSimple1">
-        SELECT id,title,postnum from post where posttime>date_sub(posttime,interval 7 day)
+    <select id="findHotPost" resultMap="PostResultMapSimple">
+        SELECT id,title,views,postnum from post where posttime>date_sub(posttime,interval 7 day)
         order by postnum desc limit 0,7
     </select>
 
     <select id="findTopPost" resultMap="PostResultMapSimple">
-        select id,title,views from post where grade>1 AND
+        select id,title,views,postnum from post where grade>1 AND
         posttime>date_sub(posttime,interval 7 day)
         order by posttime desc limit 0,5
     </select>
@@ -144,4 +137,112 @@
     <select id="findNewPostID" resultType="java.lang.Integer">
         SELECT max(id) from post;
     </select>
+
+    <select id="addCollectionNum" parameterType="int">
+        update post set collectionnum=collectionnum+1 where id=#{0}
+    </select>
+    <select id="subCollectionNum" parameterType="int">
+        update post set collectionnum=collectionnum-1 where id=#{0}
+    </select>
+
+    <update id="addPostnum" parameterType="int">
+        update post set postnum=postnum+1 where id=#{0}
+    </update>
+
+    <update id="subPostnum" parameterType="int">
+        update post set postnum=postnum-1 where id=#{0}
+    </update>
+
+    <resultMap id="PostResultMap" type="com.Thorn.model.post">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="username" property="username"/>
+        <result column="type" property="type"/>
+        <result column="grade" property="grade"/>
+        <result column="posttime" property="posttime"/>
+        <result column="postnum" property="postnum"/>
+        <result column="lastposttime" property="lastposttime"/>
+        <result column="views" property="views"/>
+    </resultMap>
+    <resultMap id="ReplyResultMap" type="com.Thorn.model.reply">
+        <id column="id" property="id"/>
+        <id column="floor" property="floor"/>
+        <id column="floorex" property="floorex"/>
+        <id column="content" property="content"/>
+        <id column="replyer" property="replyer"/>
+        <id column="replytime" property="replytime"/>
+        <id column="lastfloor" property="lastfloor"/>
+    </resultMap>
+
+    <select id="getReply" resultMap="ReplyResultMap" parameterType="com.Thorn.model.reply">
+        SELECT  reply.postid,reply.floor,reply.floorex,reply.content,
+        reply.replyer,reply.replytime,reply.lastfloor FROM reply,post
+        WHERE postid=id AND replyer!=#{0}  AND username=#{0}
+        UNION
+        SELECT * FROM reply
+        WHERE postid IN(SELECT postid FROM reply WHERE floorex=-1 AND replyer=#{0})
+        AND FLOOR IN(SELECT FLOOR FROM reply WHERE floorex=-1 AND replyer=#{0})
+        AND replyer!=#{0}
+        ORDER BY replytime DESC
+    </select>
+
+    <select id="getMyCollect" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from post where id =#{id}
+    </select>
+
+    <select id="getMyHistory" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from post where id =#{id}
+    </select>
+
+    <select id="findSomePost" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from post where title like #{name}
+    </select>
+
+    <select id="getPostByPageName" resultType="com.Thorn.model.post">
+        select * from post where title like #{0} limit #{1},#{2}
+    </select>
+
+    <select id="getMyPost" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from Post where username=#{0}
+    </select>
+
+    <select id="getMyPostAndPage" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from Post where username=#{0} limit #{1},#{2}
+    </select>
+
+    <select id="findAllPost" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from Post
+    </select>
+
+    <select id="getPostByPage" resultMap="PostResultMap" parameterType="com.Thorn.model.post">
+        select * from post limit #{0},#{1}
+    </select>
+
+    <update id="detelePost" parameterType="com.Thorn.model.post">
+        delete from post where id=#{id}
+    </update>
+
+    <update id="deteleReply" parameterType="com.Thorn.model.post">
+        delete from Reply where postid=#{id}
+    </update>
+
+    <update id="stick" parameterType="com.Thorn.model.post">
+        update post set grade=2 where id=#{id}
+    </update>
+
+    <update id="good" parameterType="com.Thorn.model.post">
+        update post set grade=1 where id=#{id}
+    </update>
+
+    <update id="stickandgood" parameterType="com.Thorn.model.post">
+        update post set grade=3 where id=#{id}
+    </update>
+
+    <update id="cancel" parameterType="com.Thorn.model.post">
+        update post set grade=0 where id=#{id}
+    </update>
+
+    <update id="decCollectNum" parameterType="com.Thorn.model.post">
+        update post set collectionnum=collectionnum-1 where id=#{id}
+    </update>
 </mapper>

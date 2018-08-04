@@ -105,4 +105,42 @@
         SELECT r.*,u.name,u.photo from reply r LEFT JOIN user u on r.replyer=u.username where
         postid =#{0} and floor=0;
     </select>
+
+    <insert id="newreply" parameterType="com.Thorn.model.reply">
+        insert into reply (postid,floor,replyer,replytime,content)
+        SELECT #{postid},max(floor)+1,#{replyer},#{replytime},#{content} from reply where
+        postid=#{postid}
+    </insert>
+
+    <update id="addlastfloor">
+        update reply set lastfloor=lastfloor+1 where postid=#{0} and floor={1} and
+        floorex={2}
+    </update>
+
+    <delete id="delreply" parameterType="com.Thorn.model.reply">
+        DELETE from reply where postid=#{postid} and floor=#{floor}
+    </delete>
+
+    <select id="getTheSubReplyNum" parameterType="com.Thorn.model.reply" resultType="int">
+        select max(floorex) from reply where postid=#{postid} and floor=#{floor}
+    </select>
+    <insert id="newSubReply" parameterType="com.Thorn.model.reply">
+       insert into reply (postid,floor,floorex,content,replyer,replytime)
+       values(#{postid},#{floor},#{floorex},#{content},#{replyer},#{replytime})
+    </insert>
+
+    <select id="findTheParentReplyer" resultType="java.lang.String"
+            parameterType="com.Thorn.model.reply">
+        select replyer from reply where postid=#{postid} and floor=#{floor} and floorex=-1
+    </select>
+
+    <delete id="delSubReply" parameterType="com.Thorn.model.reply">
+        delete from reply where postid=#{postid} and floor=#{floor} and floorex=#{floorex}
+    </delete>
+
+    <select id="getMaxReplyNum" parameterType="int" resultType="int">
+        SELECT max(floor) from reply where postid=#{0}
+    </select>
+
+
 </mapper>

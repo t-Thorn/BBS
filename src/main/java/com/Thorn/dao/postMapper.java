@@ -25,4 +25,44 @@ public interface postMapper {
     void updateViews(int id);
 
     int findNewPostID();
+
+    void addCollectionNum(int id);
+
+    void subCollectionNum(int id);
+
+    void addPostnum(int id);
+
+    void subPostnum(int id);
+
+    List<post> findAllPost();
+
+    List<post> getPostByPage(int i, int j);
+
+    int cancel(int id);
+
+    int stick(int id);
+
+    int good(int id);
+
+    int stickandgood(int id);
+
+    int detelePost(int id);
+
+    int deteleReply(int postid);
+
+    List<post> findSomePost(String name);
+
+    List<post> getPostByPageName(String name, int i, int j);
+
+    List<post> getMyPost(String username);
+
+    List<post> getMyPostAndPage(String username, int i, int j);
+
+    List<post> getMyCollect(int id);
+
+    int decCollectNum(int id);
+
+    List<post> getMyHistory(int id);
+
+    List<reply> getReply(String username);
 }

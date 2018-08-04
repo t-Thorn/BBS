@@ -1,15 +1,14 @@
 package com.Thorn.controller;
 
-import com.Thorn.model.user;
 import com.Thorn.model.userWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -27,11 +26,30 @@ public class UserController {
         return "/Login/login";
     }
 
+    @GetMapping("/user/uploadImg")
+    public String turn() {
+        return "/proto2/uploadImg";
+    }
+
+    @RequestMapping("/user/out")
+    public String out(SessionStatus status) {
+        status.setComplete();
+        return "redirect:/BBS/page";
+    }
+
+    @GetMapping("/user/OA")
+    public String jumptoOA(@ModelAttribute("userSession") userWithBLOBs user) {
+        if (user != null && user.getUsername() != null && user.getLevel() == 0) {
+            return "/proto/index";
+        }
+        return "redirect:/BBS/page";
+    }
+
     @PostMapping(value = "/user/reg")
     public String InsertUser(HttpServletRequest request, Model model) {
-        List<user> users;
+        List<userWithBLOBs> users;
 
-        user user = new user();
+        userWithBLOBs user = new userWithBLOBs();
 
         users = userMapper.findusername(request.getParameter("username"));
 
@@ -64,15 +82,17 @@ public class UserController {
 
     @PostMapping(value = "/user/login", produces = "application/json")
     public String login(HttpServletRequest request, Model model) {
-        HttpSession hs = request.getSession();
         userWithBLOBs user;
         String username = request.getParameter("username");
-        System.out.println(username);
         String password = request.getParameter("password");
         user = userMapper.login(username);
+        if (user == null) {
+            model.addAttribute("tip", "用户名不存在");
+            return "forward:/user/user";
+        }
         if (password.equals(user.getPassword())) {
             model.addAttribute("userSession", user);
-            if (user.getLevel() == 1) {
+            if (user.getLevel() == 0) {
                 return "redirect:/BBS/page";
             } else {
                 return "redirect:/BBS/page";
@@ -84,9 +104,9 @@ public class UserController {
     }
 
     @PostMapping(value = "user/update")
-    public String update(HttpServletRequest request, @ModelAttribute("userSession") user user, Model model) {
-        HttpSession hs = request.getSession();
-        user.setUsername(hs.getAttribute("username").toString());
+    public String update(HttpServletRequest request, @ModelAttribute("userSession") userWithBLOBs user,
+                         Model model) {
+        user.setUsername(user.getUsername());
         user.setName(request.getParameter("name"));
         user.setAge(Integer.parseInt(request.getParameter("age")));
         user.setIdentity(request.getParameter("identity"));
@@ -98,12 +118,11 @@ public class UserController {
     }
 
     @PostMapping(value = "user/updatepwd")
-    @ResponseBody
-    public String updatepwd(HttpServletRequest request, @ModelAttribute("userSession") user user, Model
-            model) {
-        user user1 = new user();
-        HttpSession hs = request.getSession();
-        user1.setUsername(hs.getAttribute("username").toString());
+    public String updatepwd(HttpServletRequest request, @ModelAttribute("userSession") userWithBLOBs user,
+                            Model
+                                    model) {
+        userWithBLOBs user1 = new userWithBLOBs();
+        user1.setUsername(user.getUsername());
         user1 = userMapper.login(user1.getUsername());
         if (request.getParameter("currentpwd").equals(user1.getPassword())) {
             if (request.getParameter("newpwd").equals(request.getParameter("confirmpwd"))) {
@@ -125,18 +144,17 @@ public class UserController {
 
 
     @PostMapping(value = "user/updatephoto")
-    @ResponseBody
-    public String updatephoto(HttpServletRequest request, @RequestParam("file") MultipartFile file,
-                              @ModelAttribute("userSession") user user, Model model) throws IOException {
+    public String updatephoto(@RequestParam("file") MultipartFile file,
+                              @ModelAttribute("userSession") userWithBLOBs user, Model model) throws
+            IOException {
         if (!file.isEmpty()) {
-            user.setPhoto(request.getAttribute("username").toString() + ".jpg");
-            String filename = request.getAttribute("username").toString() + ".jpg";
-            System.out.println("/photo/" + filename);
-            file.transferTo(new File("/photo/" + File.separator + filename));
+            user.setPhoto(user.getUsername() + ".jpg");
+            String filename = user.getUsername() + ".jpg";
+            file.transferTo(new File("E:\\project\\photo\\" + File.separator + filename));
             System.out.println("second");
             userMapper.updatePhoto(user);
+            model.addAttribute("userSession", user);
             model.addAttribute("tip", "修改成功");
-            model.addAttribute("photo", user.getPhoto());
             return "/proto2/uploadImg";
         } else {
             model.addAttribute("tip", "请选择图片");
@@ -148,7 +166,7 @@ public class UserController {
     @GetMapping(value = "user/select", produces = "application/json")
     public String findAllUser(HttpServletRequest request, String
             page, Model model) {
-        List<user> user = userMapper.findAllUser();
+        List<userWithBLOBs> user = userMapper.findAllUser();
         int pageSize = 7;
         request.setAttribute("userNum", user.size());
         int pageTimes;

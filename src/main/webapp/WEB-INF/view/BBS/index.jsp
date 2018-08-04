@@ -39,12 +39,19 @@
             <c:otherwise>
                 <div class="lt_login appear">
                     <ul>
-                        <li><a href="">${userSession.getName()}</a></li>
-                        <li><a href="">退出</a></li>
+                        <c:choose>
+                            <c:when test="${userSession.getLevel()!=0}">
+                                <li><a href="/myinform">${userSession.getName()}</a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="/user/OA">${userSession.getName()}</a></li>
+                            </c:otherwise>
+                        </c:choose>
+                        <li><a href="/user/out">退出</a></li>
                     </ul>
                 </div>
                 <div class="navFix">
-                    <a href="javascript:void(0)" class="navLogin">${userSession.getName()}</a>
+                    <a href="/myinform" class="navLogin">${userSession.getName()}</a>
                 </div>
             </c:otherwise>
         </c:choose>
@@ -115,8 +122,7 @@
                                                 style="border: 1px solid lawngreen;color: lawngreen">精华
                                         </span>
                                         </c:if>
-                                        <p onclick="/BBS/post?param=${post.getId()}">
-                                                ${post.getTitle()}
+                                        <p>${post.getTitle()}
                                         </p>
                                     </div>
                                 </c:when>
@@ -134,8 +140,8 @@
                                     <fmt:formatDate value="${post.getPosttime()}"
                                                     pattern="yyyy-MM-dd HH:mm"/>
                                 </li>
-                                <li>${post.getPostnum()}</li>
-                                <li>${post.getViews()}
+                                <li>${post.getViews()}</li>
+                                <li>${post.getPostnum()}
                                 </li>
                             </ul>
                         </div>
@@ -189,7 +195,7 @@
                         <c:forEach items="${EssencePosts}" var="essencepost">
                             <li>
                                 <a href="/BBS/post?param=${essencepost.getId()}">${essencepost.getTitle()}</a>
-                                <span style="float:right">${essencepost.getViews()}</span>
+                                <span style="float:right">${essencepost.getPostnum()}</span>
                             </li>
                         </c:forEach>
                     </ul>
@@ -204,7 +210,7 @@
                         <c:forEach items="${TopPosts}" var="top">
                             <li>
                                 <a href="/BBS/post?param=${top.getId()}">${top.getTitle()}</a>
-                                <span style="float:right">${top.getViews()}</span>
+                                <span style="float:right">${top.getPostnum()}</span>
                             </li>
                         </c:forEach>
                     </ul>

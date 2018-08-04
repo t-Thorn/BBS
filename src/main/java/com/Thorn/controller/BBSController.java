@@ -5,7 +5,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.Map;
 
@@ -17,36 +20,22 @@ public class BBSController {
     Logger logger = Logger.getLogger(this.getClass());
 
     @GetMapping("/")
-    public String index() {
+    public String hello() {
         return "forward:/BBS/page";
     }
 
-
     @RequestMapping("/BBS/page")
-    public String getPost(@ModelAttribute("param") int param,
-                          @ModelAttribute("content") String content
-            , @ModelAttribute("pages") int pages, Model model) {
-        //ModelAndView modelAndView=new ModelAndView();
-        //logger.warn(postMapper.findPost(content, (param - 1) * 10).get(0).getPosttime());
-        if (pages == 0) {
-            return "/BBS/index";
-        }
-        model.addAttribute("posts", postMapper.findPost(content, (param - 1) * 10));
-        return "/BBS/index";
-    }
+    public String Preprocess(@RequestParam(required = false, defaultValue = "1") int param,
+                             @RequestParam(required = false, defaultValue = "0") int method,
+                             @RequestParam(required = false, defaultValue = "") String content,
+                             Model model) {
 
-    @ModelAttribute
-    public void inPublicMethod(Model model) {
+
         model.addAttribute("EssencePosts", postMapper.findEssencePost());
         model.addAttribute("HotPosts", postMapper.findHotPost());
         model.addAttribute("TopPosts", postMapper.findTopPost());
-    }
 
-    @ModelAttribute
-    public void Preprocess(@RequestParam(required = false, defaultValue = "1") int param,
-                           @RequestParam(required = false, defaultValue = "0") int method,
-                           @RequestParam(required = false, defaultValue = "") String content,
-                           Model model) {
+
         if (method == 0) {
             Map<String, Object> map = model.asMap();
             content = (String) map.get("trueContent");
@@ -64,13 +53,10 @@ public class BBSController {
         } else
             pages = pages / 10;
 
-        logger.info("page:" + pages + " param:" + param);
         if (pages == 0) {
-            logger.warn("无结果");
             model.addAttribute("nowpage", 0);
             model.addAttribute("searchError", "无结果");
         } else if (pages < param) {
-            logger.warn("page:" + pages);
             model.addAttribute("searchError", "页面超出范围");
             param = pages;
         }
@@ -79,5 +65,11 @@ public class BBSController {
         model.addAttribute("pages", pages);
         model.addAttribute("content", content);
         model.addAttribute("trueContent", content);
+        if (pages == 0) {
+            return "/BBS/index";
+        }
+        model.addAttribute("posts", postMapper.findPost(content, (param - 1) * 10));
+        return "/BBS/index";
+        //return "redirect:/BBS/turn";
     }
 }
