@@ -20,7 +20,7 @@ public class UserSessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // 不拦截的url
-        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/login",
+        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/.",
                 "user/reg", "Home"};
 
         // 请求的url

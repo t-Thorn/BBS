@@ -15,7 +15,7 @@
 <div class="homeCen_right">
     <div class="baseHead">
         <ul>
-            <li><a href="/user/mypost?username=${user.getUsername()}">我的发帖</a></li>
+            <li><a href="/user/mypost">我的发帖</a></li>
             <li><a href="/user/mycollect">我收藏的贴</a></li>
             <li><a href="/user/history" class="on">浏览历史</a></li>
         </ul>
@@ -46,13 +46,13 @@
 
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/history?page=${currentPage-1}&username=${user.getUsername()}"><<</a>
+                <a href="/user/history?page=${currentPage-1}"><<</a>
             </c:if>
             <c:if test="${currentPage == 1}">
-                <a href="/user/history?page=1&username=${user.getUsername()}">1</a>
+                <a href="/user/history?page=1">1</a>
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/history?page=1&username=${user.getUsername()}">1</a>
+                <a href="/user/history?page=1">1</a>
             </c:if>
             <%
                 int pageTimes = (Integer) request.getAttribute("pageTimes");
@@ -60,11 +60,11 @@
                     request.setAttribute("page", i + 1);
             %>
             <c:if test="${currentPage == page}">
-                <a href="/user/history?page=<%=i + 1%>&username=${user.getUsername()}"><%=i + 1%>
+                <a href="/user/history?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <c:if test="${currentPage != page}">
-                <a href="/user/history?page=<%=i + 1%>&username=${user.getUsername()}"><%=i + 1%>
+                <a href="/user/history?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <%
@@ -73,7 +73,7 @@
 
 
             <c:if test="${currentPage != pageTimes}">
-                <a href="/user/history?page=${currentPage+1}&username=${user.getUsername()}">>></a>
+                <a href="/user/history?page=${currentPage+1}">>></a>
 
             </c:if>
         </div>

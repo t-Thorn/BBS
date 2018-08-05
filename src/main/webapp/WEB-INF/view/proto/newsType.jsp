@@ -11,7 +11,12 @@
     <link rel="stylesheet" href="/res/css/amazeui.min.css"/>
     <link rel="stylesheet" href="/res/css/admin.css"/>
 </head>
-
+<!-- tip -->
+<c:if test="${!(tip ==null)}">
+    <script>
+        alert("${tip}")
+    </script>
+</c:if>
 <body>
 <div class="admin-content-body">
     <div class="am-cf am-padding am-padding-bottom-0">
@@ -39,7 +44,7 @@
                 <div class="am-input-group am-input-group-sm">
                     <input type="text" class="am-form-field" id="search" name="search"> <span
                         class="am-input-group-btn">
-						<input class="am-btn am-btn-default" type="submit" value="搜索"> ${tip }
+						<input class="am-btn am-btn-default" type="submit" value="搜索">
 					</span>
                 </div>
             </form>
@@ -108,7 +113,7 @@
                                     <span class="am-icon-trash-o"></span> 取消置顶
                                 </a>
                             </c:if>
-                            <a href="/OA/deletepost?id=${row.getId()}&username=${row.getUsername()}"
+                            <a href="/OA/deletepost?id=${row.getId()}"
                                class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
                                 <span class="am-icon-trash-o"></span> 删除
 

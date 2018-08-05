@@ -76,7 +76,8 @@
                     $("#content").val(editor.txt.html())
                     $("#newreply").submit()
                 }
-            }
+            } else
+                alert("请登录")
         }
     </script>
     <script>
@@ -97,7 +98,6 @@
                     }, function (data, status) {
                         if (status == "success") {
                             //新增元素
-
                             if (data.content != "[object XMLDocument]" && data.content != "") {
                                 var div = document.createElement("div");
                                 div.classList.add("pendDetail_replayCon");
@@ -137,7 +137,8 @@
                                 alert("删除失败")
                         });
                 }
-            }
+            } else
+                alert("请登录")
         }
     </script>
 </head>
@@ -295,20 +296,21 @@
         <div class="indexFooter">
             <div class="indexFooter_con">
                 <c:if test="${nowpage>1}">
-                    <a href="/BBS/post?param1=${nowpage-1}"><</a>
+                    <a href="/BBS/post?param=${post.getId()}&param1=${nowpage-1}"><</a>
                 </c:if>
                 <c:forEach var="page" begin="${nowpage-4>0?nowpage-4:1}" end="${pages}">
                     <c:choose>
                         <c:when test="${page==nowpage}">
-                            <a href="/BBS/post?param1=${page}" class="on">${page}</a>
+                            <a href="/BBS/post?param=${post.getId()}&param1=${page}"
+                               class="on">${page}</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="/BBS/post?param1=${page}">${page}</a>
+                            <a href="/BBS/post?param=${post.getId()}&param1=${page}">${page}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
                 <c:if test="${nowpage!=null and nowpage !=pages}">
-                    <a href="/BBS/post?param1=${nowpage+1}">></a>
+                    <a href="/BBS/post?param=${post.getId()}&param1=${nowpage+1}">></a>
                 </c:if>
             </div>
         </div>

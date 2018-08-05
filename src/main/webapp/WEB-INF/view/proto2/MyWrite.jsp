@@ -15,7 +15,7 @@
 <div class="homeCen_right">
     <div class="baseHead">
         <ul>
-            <li><a href="/user/mypost?username=${userSession.getUsername()}" class="on">我的发帖</a>
+            <li><a href="/user/mypost" class="on">我的发帖</a>
             </li>
             <li><a href="/user/mycollect">我收藏的贴</a></li>
             <li><a href="/user/history">浏览历史</a></li>
@@ -32,13 +32,16 @@
             <div class="writeFoot">
                 <div class="writeFoot1">
                     <p>
-                        <a href="/BBS/post?param=${row.getId()}">${row.getTitle() }</a>
+
+                        <a href="javascript:void(0);"
+                           onclick="myfunction('/BBS/post?param=${row.getId()}')">
+                                ${row.getTitle() }</a>
                     </p>
                 </div>
                 <div class="writeFoot2">${row.getPosttime() }</div>
                 <div class="writeFoot3">${row.getViews() }</div>
                 <div class="writeFoot4">
-                    <a href="/user/deletepost?id=${row.getId()}&username=${row.getUsername()}">删除</a>
+                    <a href="/user/deletepost?id=${row.getId()}">删除</a>
                 </div>
             </div>
         </c:forEach>
@@ -50,13 +53,13 @@
 
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/mypost?page=${currentPage-1}&username=${userSession.getUsername()}"><<</a>
+                <a href="/user/mypost?page=${currentPage-1}"><<</a>
             </c:if>
             <c:if test="${currentPage == 1}">
-                <a href="/user/mypost?page=1&username=${userSession.getUsername()}">1</a>
+                <a href="/user/mypost?page=1">1</a>
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/mypost?page=1&username=${userSession.getUsername()}">1</a>
+                <a href="/user/mypost?page=1">1</a>
             </c:if>
             <%
                 int pageTimes = (Integer) request.getAttribute("pageTimes");
@@ -64,11 +67,11 @@
                     request.setAttribute("page", i + 1);
             %>
             <c:if test="${currentPage == page}">
-                <a href="/user/mypost?page=<%=i + 1%>&username=${userSession.getUsername()}"><%=i + 1%>
+                <a href="/user/mypost?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <c:if test="${currentPage != page}">
-                <a href="/user/mypost?page=<%=i + 1%>&username=${userSession.getUsername()}"><%=i + 1%>
+                <a href="/user/mypost?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <%
@@ -77,12 +80,16 @@
 
 
             <c:if test="${currentPage != pageTimes}">
-                <a href="/user/mypost?page=${currentPage+1}&username=${userSession.getUsername()}">>></a>
+                <a href="/user/mypost?page=${currentPage+1}">>></a>
 
             </c:if>
         </div>
     </div>
-
-
+</div>
+<script>
+    function myfunction(name) {
+        window.open(name);
+    }
+</script>
 </body>
 </html>

@@ -2,7 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+
 <head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+
     <meta charset="UTF-8">
     <title>修改头像</title>
     <link rel="stylesheet" href="/css/reset.css"/>
@@ -19,9 +27,9 @@
 <!-- endtip -->
 <div class="baseHead">
     <ul>
-        <li><a href="setting.jsp">我的资料</a></li>
-        <li><a href="uploadImg.jsp" class="on">头像</a></li>
-        <li><a href="upload_password.jsp">密码</a></li>
+        <li><a href="/tiaozhuan?name=proto2/setting">我的资料</a></li>
+        <li><a href="/user/uploadImg" class="on">头像</a></li>
+        <li><a href="/tiaozhuan?name=proto2/upload_password">密码</a></li>
     </ul>
 </div>
 <form action="/user/updatephoto" method="post" enctype="multipart/form-data">
@@ -37,7 +45,7 @@
             </div>
             <p>建议尺寸168*168，支持jpg、png、gif,最大不能超过50KB</p>
             <div class="mypic">
-                <img src="/photo/${userSession.getPhoto()}" alt=""/>
+                <img src="/photo/${userSession.getPhoto()}?rand=h9xqeI" alt=""/>
             </div>
         </div>
     </div>

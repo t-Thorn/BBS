@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="/res/css/amazeui.min.css"/>
     <link rel="stylesheet" href="/res/css/admin.css"/>
 </head>
-
+<c:if test="${!(tip ==null)}">
+    <script>
+        alert("${tip}")
+    </script>
+</c:if>
 <body>
 <div class="admin-content-body">
     <div class="am-cf am-padding am-padding-bottom-0">
@@ -29,7 +33,7 @@
                 <div class="am-input-group am-input-group-sm">
                     <input type="text" class="am-form-field" name="search" id="search"> <span
                         class="am-input-group-btn">
-						<input class="am-btn am-btn-default" type="submit" value="搜索"> ${tip}
+						 ${tip}<input class="am-btn am-btn-default" type="submit" value="搜索">
 					</span>
                 </div>
             </form>

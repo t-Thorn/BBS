@@ -50,6 +50,8 @@ public interface postMapper {
 
     int deteleReply(int postid);
 
+    int detelePost2(String username);
+
     List<post> findSomePost(String name);
 
     List<post> getPostByPageName(String name, int i, int j);

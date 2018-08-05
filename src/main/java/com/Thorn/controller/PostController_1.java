@@ -9,16 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@SessionAttributes("userSession")
 public class PostController_1 {
     @Autowired
     postMapper postMapper;
+    @Autowired
     userMapper userMapper;
 
     @GetMapping(value = "OA/Post", produces = "application/json")
@@ -141,34 +144,128 @@ public class PostController_1 {
 
     //管理员删帖
     @GetMapping(value = "OA/deletepost")
-    public String deletepost(int id, String username, Model model) {
+    public String deletepost(@RequestParam(value = "id") String id, String username, Model model) {
         // System.out.println(username);
-
+        System.out.println("-----------id:" + id);
         model.addAttribute("username", username);
-        postMapper.detelePost(id);
-        postMapper.deteleReply(id);
+        postMapper.detelePost(Integer.parseInt(id));
+        postMapper.deteleReply(Integer.parseInt(id));
+        //删除收藏中的信息
+        List<userWithBLOBs> userWithBLOBs = userMapper.findAllUsers();
+        for (int i = 0; i < userWithBLOBs.size(); i++) {
+            String collect = userWithBLOBs.get(i).getCollections();
+
+            if (collect != null && !collect.equals("")) {
+
+                String[] collects = collect.split(";");
+                collect = "";
+                for (int j = 0; j < collects.length; j++) {
+                    if (!collects[j].equals(id)) {
+                        if (j != 0) {
+                            collect += ";" + collects[j];
+                        } else {
+                            collect += collects[j];
+                        }
+                    }
+                }
+                userWithBLOBs.get(i).setCollections(collect);
+                userMapper.updateCollections(userWithBLOBs.get(i));
+            }
+        }
+
+
+        //删除历史纪录中的信息
+        for (int i = 0; i < userWithBLOBs.size(); i++) {
+            String collect = userWithBLOBs.get(i).getHistory();
+            if (collect != null && !collect.equals("")) {
+                String[] collects = collect.split(";");
+                collect = "";
+                for (int j = 0; j < collects.length; j++) {
+                    if (!collects[j].equals(id)) {
+                        if (j != 0) {
+                            collect += ";" + collects[j];
+                        } else {
+                            collect += collects[j];
+                        }
+                    }
+                    if (collects[j].equals(id)) {
+                        System.out.println("有重复值:" + id);
+                    }
+                }
+            }
+            userWithBLOBs.get(i).setHistory(collect);
+            userMapper.updateHistory(userWithBLOBs.get(i));
+        }
         return "redirect:/user/postnum";
     }
 
     //用户删帖
     @GetMapping(value = "user/deletepost")
-    public String userdeletepost(int id, String username, Model model) {
+    public String userdeletepost(@RequestParam(value = "id") String id, String username, Model model, @ModelAttribute
+            (value = "userSession") userWithBLOBs user) {
         // System.out.println(username);
 
         model.addAttribute("username", username);
-        postMapper.detelePost(id);
-        postMapper.deteleReply(id);
+        postMapper.detelePost(Integer.parseInt(id));
+        postMapper.deteleReply(Integer.parseInt(id));
+
+        //删除收藏中的信息
+        List<userWithBLOBs> userWithBLOBs = userMapper.findAllUsers();
+        for (int i = 0; i < userWithBLOBs.size(); i++) {
+            String collect = userWithBLOBs.get(i).getCollections();
+
+            if (collect != null && !collect.equals("")) {
+
+                String[] collects = collect.split(";");
+                collect = "";
+                for (int j = 0; j < collects.length; j++) {
+                    if (!collects[j].equals(id)) {
+                        if (j != 0) {
+                            collect += ";" + collects[j];
+                        } else {
+                            collect += collects[j];
+                        }
+                    }
+                }
+                userWithBLOBs.get(i).setCollections(collect);
+                userMapper.updateCollections(userWithBLOBs.get(i));
+            }
+        }
+
+
+        //删除历史纪录中的信息
+        for (int i = 0; i < userWithBLOBs.size(); i++) {
+            String collect = userWithBLOBs.get(i).getHistory();
+            if (collect != null && !collect.equals("")) {
+                String[] collects = collect.split(";");
+                collect = "";
+                for (int j = 0; j < collects.length; j++) {
+                    if (!collects[j].equals(id)) {
+                        if (j != 0) {
+                            collect += ";" + collects[j];
+                        } else {
+                            collect += collects[j];
+                        }
+                    }
+                    if (collects[j].equals(id)) {
+                        System.out.println("有重复值:" + id);
+                    }
+                }
+            }
+            userWithBLOBs.get(i).setHistory(collect);
+            userMapper.updateHistory(userWithBLOBs.get(i));
+        }
         return "redirect:/user/postnum2";
     }
 
     //用户发的帖子
     @GetMapping(value = "user/mypost")
-    public String mypost(@SessionAttribute("userSession") userWithBLOBs user, Model model, String page) {
+    public String mypost(@ModelAttribute("userSession") userWithBLOBs user, Model model, String page) {
         List<post> posts = postMapper.getMyPost(user.getUsername());
         //List<Post> posts;
         int pageSize = 10;
         model.addAttribute("postNum", posts.size());
-
+        System.out.println("__________________" + user.getUsername() + "-----------------");
         //总页数
         int pageTimes;
         if (posts.size() % pageSize == 0) {
@@ -194,9 +291,8 @@ public class PostController_1 {
 
     //收藏的帖子
     @GetMapping(value = "user/mycollect")
-    public String mycollect(String username, @SessionAttribute("userSession") userWithBLOBs user, Model model,
-                            String
-                                    page) {
+    public String mycollect(@ModelAttribute("userSession") userWithBLOBs user, Model model,
+                            String page) {
         List<post> posts = new ArrayList<post>();
         List<post> post;
         String collect = user.getCollections();
@@ -231,17 +327,16 @@ public class PostController_1 {
         int startRow = (Integer.parseInt(page) - 1) * pageSize;
         int size = collects.length;
         if (page.equals("1")) {
-            if (collects.length > 10) {
-                if (collects.length > 20) {
-                    int j = collects.length - 20;
-                    size = collects.length - j;
-                }
+            if (collects.length > 10 && collects.length <= 20) {
+                int j = collects.length - 10;
+                size = collects.length - j;
+            }
+            if (collects.length > 20) {
                 int j = collects.length - 10;
                 size = collects.length - j;
             }
 
             for (int i = 0; i < size; i++) {
-                System.out.println("-----------------1------");
                 post = postMapper.getMyCollect(Integer.parseInt(collects[i]));
                 posts.addAll(post);
             }
@@ -252,13 +347,11 @@ public class PostController_1 {
                 size = collects.length - j;
             }
             for (int i = 10; i < size; i++) {
-                System.out.println("-----------------2------");
                 post = postMapper.getMyCollect(Integer.parseInt(collects[i]));
                 posts.addAll(post);
             }
         } else if (page.equals("3")) {
             for (int i = 20; i < size; i++) {
-                System.out.println("-----------------3------");
                 post = postMapper.getMyCollect(Integer.parseInt(collects[i]));
                 posts.addAll(post);
             }
@@ -269,23 +362,33 @@ public class PostController_1 {
 
         return "proto2/myCollect";
     }
-
-
     //取消收藏
     @GetMapping(value = "user/cancelcollect")
-    public String cancel(@SessionAttribute("userSession") userWithBLOBs user, Model model, @RequestParam("id") String
-            id) {
+    public String cancel(@ModelAttribute("userSession") userWithBLOBs user, Model model, @RequestParam("id")
+            String id) {
         //System.out.println("-------------------收藏减一");
         String collect = user.getCollections();
         String[] collects = collect.split(";");
-        collect = "";
-        //System.out.println("--------------id="+id);
-        for (int i = 0; i < collects.length - 1; i++) {
-            if (!collects[i].equals(id)) {
-                //System.out.println("--------------"+collects[i]);
-                collect += collects[i] + ";";
+        if (collect != null && !collect.equals("")) {
+
+
+            collect = "";
+            //System.out.println("--------------id="+id);
+
+            for (int i = 0; i < collects.length; i++) {
+
+                if (!collects[i].equals(id)) {
+                    //System.out.println("--------------"+collects[i]);
+                    if (i != 0) {
+                        collect += ";" + collects[i];
+                    } else {
+                        collect += collects[i];
+                    }
+                }
+
             }
         }
+        System.out.println("--------------collect" + collect);
         postMapper.decCollectNum(Integer.parseInt(id));
         model.addAttribute("collect", collect);
         return "redirect:/user/updatecollect";
@@ -293,7 +396,7 @@ public class PostController_1 {
 
     //浏览历史
     @GetMapping(value = "user/history")
-    public String history(String username, @SessionAttribute("userSession") userWithBLOBs user, Model model, String
+    public String history(@ModelAttribute("userSession") userWithBLOBs user, Model model, String
             page) {
         List<post> posts = new ArrayList<post>();
         List<post> post;
@@ -302,6 +405,7 @@ public class PostController_1 {
             System.out.println("------------------NULL----------");
             return "proto2/HistoryNull";
         }
+
         String[] collects = collect.split(";");
         for (int i = collects.length - 1; i >= 0; i--) {
             post = postMapper.getMyHistory(Integer.parseInt(collects[i]));
@@ -330,11 +434,13 @@ public class PostController_1 {
         int startRow = (Integer.parseInt(page) - 1) * pageSize;
         int size = collects.length;
         if (page.equals("1")) {
-            if (collects.length > 10) {
-                if (collects.length > 20) {
-                    int j = collects.length - 20;
-                    size = collects.length - j;
-                }
+            if (collects.length > 10 && collects.length <= 20) {
+
+                int j = collects.length - 10;
+                size = collects.length - j;
+
+            }
+            if (collects.length > 20) {
                 int j = collects.length - 10;
                 size = collects.length - j;
             }
@@ -370,7 +476,7 @@ public class PostController_1 {
     }
 
     @GetMapping(value = "reply/get")
-    public String getreply(Model model, @SessionAttribute("userSession") userWithBLOBs user) {
+    public String getreply(Model model, @ModelAttribute("userSession") userWithBLOBs user) {
         List<reply> reply = new ArrayList<reply>();
         reply = postMapper.getReply(user.getUsername());
         model.addAttribute("reply", reply);

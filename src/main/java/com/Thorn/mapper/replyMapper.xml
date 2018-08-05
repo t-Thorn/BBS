@@ -142,5 +142,11 @@
         SELECT max(floor) from reply where postid=#{0}
     </select>
 
+    <select id="deteleReply2" resultMap="ResultMapWithBLOBs" parameterType="com.Thorn.model.reply">
+        DELETE FROM reply WHERE postid IN (SELECT DISTINCT id FROM post WHERE username =#{0})
+    </select>
 
+    <update id="deleteReply" parameterType="com.Thorn.model.reply">
+        DELETE FROM reply WHERE replyer=#{0}
+    </update>
 </mapper>

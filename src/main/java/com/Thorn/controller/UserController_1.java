@@ -1,20 +1,31 @@
 package com.Thorn.controller;
 
 
+import com.Thorn.dao.postMapper;
+import com.Thorn.dao.replyMapper;
 import com.Thorn.dao.userMapper;
 import com.Thorn.model.userWithBLOBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
-import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
 
 @Controller
+@SessionAttributes("userSession")
 public class UserController_1 {
+
     @Autowired
     userMapper userMapper;
+    @Autowired
+    postMapper postMapper;
+    @Autowired
+    replyMapper ReplyMapper;
 
     @GetMapping(value = "myinform")
     public String myinform() {
@@ -27,19 +38,114 @@ public class UserController_1 {
         return name;
     }
 
+    @GetMapping(value = "user/select", produces = "application/json")
+    public String findAllUser(String page, Model model, @RequestParam(value = "search") String search) throws IOException {
+        List<userWithBLOBs> users;
+        int pageSize = 7;
+        int pageTimes;
+        if (!search.equals("null")) {
+            users = userMapper.findsomeUser("%" + search + "%");
+            System.out.println("---------user----------");
+
+            if (users.size() > 0) {
+                System.out.println("是否为空" + users.size());
+                System.out.println("theonly");
+                if (users.size() % pageSize == 0) {
+
+                    pageTimes = users.size() / pageSize;
+                } else {
+                    pageTimes = users.size() / pageSize + 1;
+                }
+
+                model.addAttribute("pageTimes", pageTimes);
+
+                //页面初始的时候page没有值
+                if (null == page) {
+                    page = "1";
+                }
+
+                //每页开始的第几条记录
+                int startRow = (Integer.parseInt(page) - 1) * pageSize;
+                users = userMapper.getUserByPageName("%" + search + "%", startRow, pageSize);
+                model.addAttribute("currentPage", Integer.parseInt(page));
+                //request.setAttribute("currentPage", Integer.parseInt(page));
+                model.addAttribute("user", users);
+            } else if (users.size() == 0) {
+                model.addAttribute("tip", "没有该用户");
+                users = userMapper.findAllUser();
+                model.addAttribute("userNum", users.size());
+                System.out.println("five");
+                //总页数
+
+                if (users.size() % pageSize == 0) {
+                    pageTimes = users.size() / pageSize;
+                } else {
+                    pageTimes = users.size() / pageSize + 1;
+                }
+
+                model.addAttribute("pageTimes", pageTimes);
+
+                //页面初始的时候page没有值
+                if (null == page) {
+                    page = "1";
+                }
+
+                //每页开始的第几条记录
+                int startRow = (Integer.parseInt(page) - 1) * pageSize;
+                users = this.userMapper.getUserByPage(startRow, pageSize);
+                model.addAttribute("currentPage", Integer.parseInt(page));
+                //request.setAttribute("currentPage", Integer.parseInt(page));
+                model.addAttribute("user", users);
+            }
+        }
+        //查到的总用户数
+        else {
+
+            users = userMapper.findAllUser();
+            model.addAttribute("userNum", users.size());
+
+            //总页数
+
+            if (users.size() % pageSize == 0) {
+                pageTimes = users.size() / pageSize;
+            } else {
+                pageTimes = users.size() / pageSize + 1;
+            }
+
+            model.addAttribute("pageTimes", pageTimes);
+
+            //页面初始的时候page没有值
+            if (null == page) {
+                page = "1";
+            }
+
+            //每页开始的第几条记录
+            int startRow = (Integer.parseInt(page) - 1) * pageSize;
+            users = this.userMapper.getUserByPage(startRow, pageSize);
+            model.addAttribute("currentPage", Integer.parseInt(page));
+            //request.setAttribute("currentPage", Integer.parseInt(page));
+            model.addAttribute("user", users);
+        }
+        return "proto/user";
+    }
+
     @GetMapping(value = "user/delete", produces = "application/json")
     public String deleteUser(String username) {
+        ReplyMapper.deleteReply(username);
+        ReplyMapper.deteleReply2(username);
+        int j = postMapper.detelePost2(username);
         userMapper.deleteUser(username);
+
+
         return "redirect:/user/select?search=null";
     }
 
     @GetMapping(value = "user/updatecollect", produces = "application/json")
-    public String collect(@SessionAttribute("user") userWithBLOBs user, @RequestParam("collect")
-            String
-            Collect, HttpSession hs) {
-        System.out.println(Collect);
+    public String collect(@ModelAttribute("userSession") userWithBLOBs user, @RequestParam("collect")
+            String Collect, Model model) {
+        System.out.println("----------------Collect:" + Collect);
         user.setCollections(Collect);
-        hs.setAttribute("user", user);
+        model.addAttribute("userSession", user);
         userMapper.updateCollect(Collect, user.getUsername());
         return "redirect:/user/mycollect";
     }

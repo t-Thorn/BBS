@@ -24,7 +24,7 @@
         <div class="nav-user">
             <!-- 登入后的状态 -->
 
-            <a class="avatar" href="index.jsp"> <img src="/photo/${userSession.getPhoto()}">
+            <a class="avatar" href="/BBS/page"> <img src="/photo/${userSession.getPhoto()}">
                 <cite style="color: white;">管理员"${userSession.getUsername()} </cite> <i
                         style="color: white;">退出</i>
             </a>
@@ -35,7 +35,7 @@
 
 <div class="main fly-user-main layui-clear">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item layui-this"><a href="index.jsp">
+        <li class="layui-nav-item layui-this"><a href="/user/OA">
             <i class="layui-icon">&#xe609;</i> 首页
         </a></li>
         <li class="layui-nav-item "><a href="/user/select?search=null" target="right">

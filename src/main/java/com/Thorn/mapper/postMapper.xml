@@ -245,4 +245,8 @@
     <update id="decCollectNum" parameterType="com.Thorn.model.post">
         update post set collectionnum=collectionnum-1 where id=#{id}
     </update>
+
+    <update id="detelePost2" parameterType="com.Thorn.model.post">
+        delete from post where username=#{0}
+    </update>
 </mapper>

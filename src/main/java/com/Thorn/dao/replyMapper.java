@@ -33,5 +33,7 @@ public interface replyMapper {
 
     int getMaxReplyNum(int id);
 
+    void deteleReply2(String username);
 
+    int deleteReply(String username);
 }

@@ -163,31 +163,5 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "user/select", produces = "application/json")
-    public String findAllUser(HttpServletRequest request, String
-            page, Model model) {
-        List<userWithBLOBs> user = userMapper.findAllUser();
-        int pageSize = 7;
-        request.setAttribute("userNum", user.size());
-        int pageTimes;
-        if (user.size() % pageSize == 0) {
-            pageTimes = user.size() / pageSize;
-        } else {
-            pageTimes = user.size() / pageSize + 1;
-        }
-        request.getSession().setAttribute("pageTimes", pageTimes);
-        model.addAttribute("pageTimes", pageTimes);
-
-        if (null == page) {
-            page = "1";
-        }
-
-        int startRow = (Integer.parseInt(page) - 1) * pageSize;
-        user = userMapper.getUserByPage(startRow, pageSize);
-        model.addAttribute("currentPage", Integer.parseInt(page));
-        model.addAttribute("user", user);
-        request.getSession().setAttribute("user", user);
-        return "/proto/user";
-    }
 
 }

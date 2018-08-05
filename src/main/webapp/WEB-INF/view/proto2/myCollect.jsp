@@ -17,7 +17,7 @@
 <div class="homeCen_right">
     <div class="baseHead">
         <ul>
-            <li><a href="/user/mypost?username=${user.getUsername()}">我的发帖</a></li>
+            <li><a href="/user/mypost">我的发帖</a></li>
             <li><a href="/user/mycollect" class="on">我收藏的贴</a></li>
             <li><a href="/user/history">浏览历史</a></li>
         </ul>
@@ -35,7 +35,8 @@
             <div class="writeFoot">
                 <div class="writeFoot1">
                     <p>
-                        <a href="/BBS/post?param=${row.getId()} ">${row.getTitle() }</a>
+                        <a href="javascript:void(0);" onclick
+                                ="myfunction('/BBS/post?param=${row.getId()}')">${row.getTitle() }</a>
                     </p>
                 </div>
                 <div class="writeFoot2">${row.getPosttime() }</div>
@@ -53,13 +54,13 @@
 
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/mycollect?page=${currentPage-1}&username=${user.getUsername()}"><<</a>
+                <a href="/user/mycollect?page=${currentPage-1}"><<</a>
             </c:if>
             <c:if test="${currentPage == 1}">
-                <a href="/user/mycollect?page=1&username=${user.getUsername()}">1</a>
+                <a href="/user/mycollect?page=1">1</a>
             </c:if>
             <c:if test="${currentPage != 1}">
-                <a href="/user/mycollect?page=1&username=${user.getUsername()}">1</a>
+                <a href="/user/mycollect?page=1">1</a>
             </c:if>
             <%
                 int pageTimes = (Integer) request.getAttribute("pageTimes");
@@ -67,11 +68,11 @@
                     request.setAttribute("page", i + 1);
             %>
             <c:if test="${currentPage == page}">
-                <a href="/user/mycollect?page=<%=i + 1%>&username=${user.getUsername()}"><%=i + 1%>
+                <a href="/user/mycollect?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <c:if test="${currentPage != page}">
-                <a href="/user/mycollect?page=<%=i + 1%>&username=${user.getUsername()}"><%=i + 1%>
+                <a href="/user/mycollect?page=<%=i + 1%>"><%=i + 1%>
                 </a>
             </c:if>
             <%
@@ -80,12 +81,17 @@
 
 
             <c:if test="${currentPage != pageTimes}">
-                <a href="/user/mycollect?page=${currentPage+1}&username=${user.getUsername()}">>></a>
+                <a href="/user/mycollect?page=${currentPage+1}">>></a>
 
             </c:if>
         </div>
     </div>
-
+</div>
+<script>
+    function myfunction(name) {
+        window.open(name);
+    }
+</script>
 
 </body>
 </html>

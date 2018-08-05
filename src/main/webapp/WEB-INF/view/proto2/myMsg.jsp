@@ -22,8 +22,8 @@
         <div class="myMsgCon">
             <div class="myMsgCon_detail">
 
-                <a href="/BBS/post?param=${row.getPostid()} ">${row.getReplyer() }回复你：${row.getContent() }</a>
-
+                <a href="javascript:void(0);"
+                   onclick="myfunction('/BBS/post?param=${row.getPostid()}')">${row.getReplyer() }回复你：${row.getContent() }</a>
             </div>
             <div class="writeFoot3">${row.getReplytime() }</div>
         </div>
@@ -39,5 +39,10 @@
 </div>
 </div>
 </div>
+<script>
+    function myfunction(name) {
+        window.open(name);
+    }
+</script>
 </body>
 </html>

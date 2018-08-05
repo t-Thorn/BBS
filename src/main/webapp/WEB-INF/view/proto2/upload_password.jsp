@@ -18,7 +18,7 @@
 <div class="baseHead">
     <ul>
         <li><a href="/tiaozhuan?name=proto2/setting">我的资料</a></li>
-        <li><a href="uploadImg.jsp">头像</a></li>
+        <li><a href="/user/uploadImg">头像</a></li>
         <li><a href="/tiaozhuan?name=proto2/upload_password" class="on">密码</a></li>
     </ul>
 </div>

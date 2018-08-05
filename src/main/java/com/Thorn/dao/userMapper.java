@@ -6,6 +6,8 @@ import com.Thorn.model.userWithBLOBs;
 import java.util.List;
 
 public interface userMapper {
+    List<userWithBLOBs> findAllUsers();
+
     int insert(userWithBLOBs record);
     user getSimpleInfo(String username);
     userWithBLOBs login(String username);

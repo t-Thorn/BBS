@@ -16,7 +16,7 @@
 <div class="homeCen_right">
     <div class="baseHead">
         <ul>
-            <li><a href="/user/mypost?username=${user.getUsername()}">我的发帖</a></li>
+            <li><a href="/user/mypost">我的发帖</a></li>
             <li><a href="/user/mycollect" class="on">我收藏的贴</a></li>
             <li><a href="/user/history">浏览历史</a></li>
         </ul>

@@ -35,6 +35,8 @@ public class BBSController {
         model.addAttribute("HotPosts", postMapper.findHotPost());
         model.addAttribute("TopPosts", postMapper.findTopPost());
 
+        if (param < 1)
+            param = 1;
 
         if (method == 0) {
             Map<String, Object> map = model.asMap();
@@ -54,7 +56,7 @@ public class BBSController {
             pages = pages / 10;
 
         if (pages == 0) {
-            model.addAttribute("nowpage", 0);
+            param = 0;
             model.addAttribute("searchError", "无结果");
         } else if (pages < param) {
             model.addAttribute("searchError", "页面超出范围");
