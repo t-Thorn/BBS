@@ -20,7 +20,7 @@ public class UserSessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         // 不拦截的url
-        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/.",
+        String[] notFilter = new String[]{"BBS/", "Login/", "user/user", "user/login",
                 "user/reg", "Home"};
 
         // 请求的url
@@ -85,10 +85,13 @@ public class UserSessionFilter extends OncePerRequestFilter {
         }
         //含有notFilter中的任何一个则不进行拦截
         for (String s : notFilter) {
+            logger.info(s);
             if (url.indexOf(s) != -1) {
+                logger.info(s);
                 return false;
             }
         }
+        logger.info("拦截:" + url);
         return true;
     }
 

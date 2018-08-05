@@ -298,7 +298,8 @@
                 <c:if test="${nowpage>1}">
                     <a href="/BBS/post?param=${post.getId()}&param1=${nowpage-1}"><</a>
                 </c:if>
-                <c:forEach var="page" begin="${nowpage-4>0?nowpage-4:1}" end="${pages}">
+                <c:forEach var="page" begin="${nowpage-2>0?nowpage-2:1}"
+                           end="${pages-nowpage>=2?nowpage+2:pages}">
                     <c:choose>
                         <c:when test="${page==nowpage}">
                             <a href="/BBS/post?param=${post.getId()}&param1=${page}"

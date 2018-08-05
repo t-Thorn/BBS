@@ -157,7 +157,8 @@
                 <c:if test="${nowpage>1}">
                     <a href="/BBS/page?param=${nowpage-1}"><</a>
                 </c:if>
-                <c:forEach var="page" begin="${nowpage-4>0?nowpage-4:1}" end="${pages}">
+                <c:forEach var="page" begin="${nowpage-2>0?nowpage-2:1}"
+                           end="${pages-nowpage>=2?nowpage+2:pages}">
                     <c:choose>
                         <c:when test="${page==nowpage}">
                             <a href="/BBS/page?param=${page}" class="on">${page}</a>
@@ -170,7 +171,7 @@
                 <c:if test="${nowpage!=null and nowpage !=pages}">
                     <a href="/BBS/page?param=${nowpage+1}">></a>
                 </c:if>
-                <input type="text" id="page" placeholder="页码" style="width: 80px;
+                <input type="text" id="page" placeholder="页码" style="width: 60px;
     height: 40px;text-indent: 20px;border: none;border-radius: 10px 0 10px 10px;float: left;">
                 <script>
                     function choosepage() {

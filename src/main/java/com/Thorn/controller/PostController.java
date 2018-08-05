@@ -197,8 +197,9 @@ public class PostController {
                 result.put("content", reply.getContent());
                 String parentReplyer = userMapper.getSimpleInfo(replyMapper.findTheParentReplyer
                         (reply)).getName();
+                String replyer = userMapper.getSimpleInfo(reply.getReplyer()).getName();
                 result.put("parentreplyer", parentReplyer);
-                result.put("replyer", reply.getReplyer());
+                result.put("replyer", replyer);
                 result.put("floorex", nowfloorex);
                 logger.info(reply.toString());
                 return result;
