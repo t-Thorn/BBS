@@ -125,8 +125,7 @@
         select max(floorex) from reply where postid=#{postid} and floor=#{floor}
     </select>
     <insert id="newSubReply" parameterType="com.Thorn.model.reply">
-       insert into reply (postid,floor,floorex,content,replyer,replytime)
-       values(#{postid},#{floor},#{floorex},#{content},#{replyer},#{replytime})
+        insert into reply,#{floor},#{floorex},#{content},#{replyer},#{replytime})
     </insert>
 
     <select id="findTheParentReplyer" resultType="java.lang.String"

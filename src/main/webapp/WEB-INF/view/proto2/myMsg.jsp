@@ -10,14 +10,9 @@
     <link rel="stylesheet" href="/css/homePublic.css"/>
     <link rel="stylesheet" href="/css/myMsg.css"/>
 </head>
-<body>
-
-
-<div class="homeCen_right">
-    <div class="baseHead">
+<body style="background-color: #fff;">
+<div class="baseHead" style="background-color: #fff;">
         <p>我的消息</p>
-    </div>
-
     <c:forEach var="row" items="${reply }">
         <div class="myMsgCon">
             <div class="myMsgCon_detail">

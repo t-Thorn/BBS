@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -148,13 +149,21 @@ public class UserController {
                               @ModelAttribute("userSession") userWithBLOBs user, Model model) throws
             IOException {
         if (!file.isEmpty()) {
-            user.setPhoto(user.getUsername() + ".jpg");
-            String filename = user.getUsername() + ".jpg";
+            File f = new File("E:\\project\\photo\\" + user.getPhoto());
+            if (f.exists()) {
+                f.delete();
+            }
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+
+            String filename = user.getUsername() + df.format(new Date()) + ".jpg";
             file.transferTo(new File("E:\\project\\photo\\" + File.separator + filename));
             System.out.println("second");
+            user.setPhoto(filename);
             userMapper.updatePhoto(user);
+
             model.addAttribute("userSession", user);
             model.addAttribute("tip", "修改成功");
+
             return "/proto2/uploadImg";
         } else {
             model.addAttribute("tip", "请选择图片");

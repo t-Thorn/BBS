@@ -18,7 +18,8 @@
     </script>
 </c:if>
 <body>
-<div class="admin-content-body">
+
+<div class="admin-content-body" style="height: auto">
     <div class="am-cf am-padding am-padding-bottom-0">
         <div class="am-fl am-cf">
             <strong class="am-text-primary am-text-lg">浏览帖子</strong>
@@ -29,15 +30,7 @@
     <hr>
 
     <div class="am-g">
-        <div class="am-u-sm-12 am-u-md-6">
-            <div class="am-btn-toolbar">
-                <div class="am-btn-group am-btn-group-xs">
-                    <button type="button" class="am-btn am-btn-default">
-                        <span class="am-icon-plus"></span> 新增
-                    </button>
-                </div>
-            </div>
-        </div>
+
         <div class="am-u-sm-12 am-u-md-3"></div>
         <div class="am-u-sm-12 am-u-md-3">
             <form action="">
@@ -58,8 +51,7 @@
                     id="example4">
                     <thead>
                     <tr>
-
-                        <th class="table-id">ID</th>
+                        <th class="table-id" style="width: 30px">ID</th>
                         <th class="table-title">贴名</th>
                         <th class="table-title">发帖人</th>
                         <th class="table-set">操作</th>
@@ -67,40 +59,40 @@
                     <tr>
                         <c:forEach var="row" items="${post}">
                         <td class="center">${row.getId() }</td>
-                        <td class="center">${row.getTitle() }</td>
+                        <td class="center"><a href="javascript:void(0);"
+                                              onclick="myfunction('/BBS/post?param=${row.getId()}')">${row.getTitle() }</a>
+                        </td>
                         <td class="center">${row.getUsername() }</td>
                         <td class="center">
-
-
                             <c:if test="${ row.getGrade()==0}">
                                 <a href="/OA/good?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 加精
+                                    <span class=""></span> 加精
 
                                 </a>
                                 <a href="/OA/stick?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 置顶
+                                    <span class=""></span> 置顶
                                 </a>
                             </c:if>
                             <c:if test="${row.getGrade()==1 }">
                                 <a href="/OA/good?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 取消加精
+                                    <span class=""></span> 取消加精
                                 </a>
                                 <a href="/OA/stick?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 置顶
+                                    <span class=""></span> 置顶
                                 </a>
                             </c:if>
                             <c:if test="${row.getGrade()==2 }">
                                 <a href="/OA/good?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 加精
+                                    <span class=""></span> 加精
                                 </a>
                                 <a href="/OA/stick?id=${row.getId()}&grade=${row.getGrade()}"
                                    class="am-btn am-btn-default am-btn-xs am-text-danger am-hide-sm-only">
-                                    <span class="am-icon-trash-o"></span> 取消置顶
+                                    <span class=""></span> 取消置顶
                                 </a>
                             </c:if>
                             <c:if test="${row.getGrade()==3 }">
@@ -172,7 +164,11 @@
     </div>
 </div>
 
-
+<script>
+    function myfunction(name) {
+        window.open(name);
+    }
+</script>
 </body>
 
 </html>

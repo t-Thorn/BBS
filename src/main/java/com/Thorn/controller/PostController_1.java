@@ -27,7 +27,7 @@ public class PostController_1 {
     @GetMapping(value = "OA/Post", produces = "application/json")
     public String intopost(String page, Model model, @RequestParam(value = "search") String search) {
         List<post> posts;
-        int pageSize = 7;
+        int pageSize = 5;
         System.out.println("--------------------" + search);
         if (!search.equals("null")) {
             posts = postMapper.findSomePost("%" + search + "%");
@@ -53,6 +53,7 @@ public class PostController_1 {
                 //每页开始的第几条记录
                 int startRow = (Integer.parseInt(page) - 1) * pageSize;
                 posts = this.postMapper.getPostByPageName("%" + search + "%", startRow, pageSize);
+                System.out.println(posts.size());
                 model.addAttribute("currentPage", Integer.parseInt(page));
                 model.addAttribute("post", posts);
             } else {
@@ -81,6 +82,7 @@ public class PostController_1 {
                 posts = this.postMapper.getPostByPage(startRow, pageSize);
                 model.addAttribute("currentPage", Integer.parseInt(page));
                 model.addAttribute("post", posts);
+                System.out.println(posts.size());
             }
         } else {
             posts = postMapper.findAllPost();
@@ -107,6 +109,8 @@ public class PostController_1 {
             posts = this.postMapper.getPostByPage(startRow, pageSize);
             model.addAttribute("currentPage", Integer.parseInt(page));
             model.addAttribute("post", posts);
+            System.out.println(posts.size());
+            System.out.println("-----------size" + pageSize);
         }
 
 
@@ -161,10 +165,10 @@ public class PostController_1 {
                 collect = "";
                 for (int j = 0; j < collects.length; j++) {
                     if (!collects[j].equals(id)) {
-                        if (j != 0) {
-                            collect += ";" + collects[j];
-                        } else {
+                        if (j == collects.length - 1) {
                             collect += collects[j];
+                        } else {
+                            collect += collects[j] + ";";
                         }
                     }
                 }
@@ -182,10 +186,10 @@ public class PostController_1 {
                 collect = "";
                 for (int j = 0; j < collects.length; j++) {
                     if (!collects[j].equals(id)) {
-                        if (j != 0) {
-                            collect += ";" + collects[j];
-                        } else {
+                        if (j == collects.length - 1) {
                             collect += collects[j];
+                        } else {
+                            collect += collects[j] + ";";
                         }
                     }
                     if (collects[j].equals(id)) {
@@ -220,12 +224,13 @@ public class PostController_1 {
                 collect = "";
                 for (int j = 0; j < collects.length; j++) {
                     if (!collects[j].equals(id)) {
-                        if (j != 0) {
-                            collect += ";" + collects[j];
-                        } else {
+                        if (j == collects.length - 1) {
                             collect += collects[j];
+                        } else {
+                            collect += collects[j] + ";";
                         }
                     }
+
                 }
                 userWithBLOBs.get(i).setCollections(collect);
                 userMapper.updateCollections(userWithBLOBs.get(i));
@@ -241,19 +246,25 @@ public class PostController_1 {
                 collect = "";
                 for (int j = 0; j < collects.length; j++) {
                     if (!collects[j].equals(id)) {
-                        if (j != 0) {
-                            collect += ";" + collects[j];
-                        } else {
+                        if (j == collects.length - 1) {
                             collect += collects[j];
+                        } else {
+                            collect += collects[j] + ";";
                         }
                     }
                     if (collects[j].equals(id)) {
                         System.out.println("有重复值:" + id);
                     }
                 }
+                if (user.getUsername() == userWithBLOBs.get(i).getUsername()) {
+                    user.setHistory(collect);
+                }
             }
+
             userWithBLOBs.get(i).setHistory(collect);
             userMapper.updateHistory(userWithBLOBs.get(i));
+
+            model.addAttribute("userSession", user);
         }
         return "redirect:/user/postnum2";
     }
@@ -379,10 +390,10 @@ public class PostController_1 {
 
                 if (!collects[i].equals(id)) {
                     //System.out.println("--------------"+collects[i]);
-                    if (i != 0) {
-                        collect += ";" + collects[i];
-                    } else {
+                    if (i == collects.length - 1) {
                         collect += collects[i];
+                    } else {
+                        collect += collects[i] + ";";
                     }
                 }
 
@@ -479,6 +490,11 @@ public class PostController_1 {
     public String getreply(Model model, @ModelAttribute("userSession") userWithBLOBs user) {
         List<reply> reply = new ArrayList<reply>();
         reply = postMapper.getReply(user.getUsername());
+        for (int i = 0; i < reply.size(); i++) {
+            if (reply.get(i).getFloorex() == -1) {
+                reply.get(i).setContent("具体内容点击查看");
+            }
+        }
         model.addAttribute("reply", reply);
         return "proto2/myMsg";
     }

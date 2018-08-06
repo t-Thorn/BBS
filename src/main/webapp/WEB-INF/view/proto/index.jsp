@@ -21,13 +21,11 @@
            style="margin-left: 30px; line-height: 65px; color: white; font-size: 18px;">论坛管理系统后台</a>
         <div class="nav"></div>
 
-        <div class="nav-user">
+        <div class="nav-user" style="margin-right: 150px">
             <!-- 登入后的状态 -->
-
-            <a class="avatar" href="/BBS/page"> <img src="/photo/${userSession.getPhoto()}">
-                <cite style="color: white;">管理员"${userSession.getUsername()} </cite> <i
-                        style="color: white;">退出</i>
-            </a>
+            <a class="avatar" href="/BBS/page"> <img src="/photo/${userSession.getPhoto()}"></a>
+            <cite style="color: white;">管理员"${userSession.getUsername()} </cite>
+            <a style="color: white;" href="/user/out">退出</a>
         </div>
     </div>
 </div>
@@ -36,14 +34,12 @@
 <div class="main fly-user-main layui-clear">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
         <li class="layui-nav-item layui-this"><a href="/user/OA">
-            <i class="layui-icon">&#xe609;</i> 首页
+            <i class="layui-icon">&#xe609;</i> 浏览帖子
         </a></li>
         <li class="layui-nav-item "><a href="/user/select?search=null" target="right">
             <i class="layui-icon">&#xe612;</i> 用户管理
         </a></li>
-        <li class="layui-nav-item"><a href="/OA/Post?search=null" target="right">
-            <i class="layui-icon">&#xe611;</i> 浏览帖子
-        </a></li>
+
     </ul>
 
     <div class="site-tree-mobile layui-hide">
@@ -72,23 +68,6 @@
     layui.use('element', function () {
         var element = layui.element();
     });
-</script>
-<script>
-
-    layui.cache.page = '';
-    layui.cache.user = {
-        username: '游客'
-        , uid: -1
-        , avatar: '../res/images/avatar/00.jpg'
-        , experience: 83
-        , sex: '男'
-    };
-    layui.config({
-        version: "2.0.0"
-        , base: '../res/mods/'
-    }).extend({
-        fly: 'index'
-    }).use('fly');
 </script>
 </body>
 </html>

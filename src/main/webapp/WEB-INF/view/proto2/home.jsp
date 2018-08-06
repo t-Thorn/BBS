@@ -27,11 +27,11 @@
     <div class="home_name"><p <c:if test="${gender eq '男'}"> class="male"</c:if> <c:if
             test="${gender eq '女'}"> class="female"</c:if>>${name }</p>
     </div>
-    <div class="home_msg">
-        <ul>
-            <li>粉丝数${fans}</li>
-        </ul>
-    </div>
+    <%--    <div class="home_msg">
+            <ul>
+                <li>粉丝数${fans}</li>
+            </ul>
+        </div>--%>
 </div>
 </body>
 </html>

@@ -30,7 +30,8 @@
             <div class="writeFoot">
                 <div class="writeFoot1">
                     <p>
-                        <a href="/BBS/post?param=${row.getId()}">${row.getTitle() }</a>
+                        <a href="javascript:void(0);"
+                           onclick="myfunction('/BBS/post?param=${row.getId()}')">${row.getTitle() }</a>
                     </p>
                 </div>
                 <div class="writeFoot2">${row.getPosttime() }</div>
@@ -78,7 +79,11 @@
             </c:if>
         </div>
     </div>
-
+    <script>
+        function myfunction(name) {
+            window.open(name);
+        }
+    </script>
 
 </body>
 </html>

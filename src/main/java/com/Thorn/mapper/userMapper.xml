@@ -103,7 +103,8 @@
 
     <insert id="InsertUser" parameterType="com.Thorn.model.userWithBLOBs" useGeneratedKeys="true"
             keyProperty="id">
-        insert into user(username,password,identity) values(#{username},#{password},#{identity})
+        insert into user(username,password,identity,name)
+        values(#{username},#{password},#{identity},#{name})
     </insert>
 
     <select id="findAllUsers" resultMap="ResultMapWithBLOBs"

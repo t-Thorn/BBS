@@ -175,14 +175,20 @@
     </resultMap>
 
     <select id="getReply" resultMap="ReplyResultMap" parameterType="com.Thorn.model.reply">
-        SELECT  reply.postid,reply.floor,reply.floorex,reply.content,
+        SELECT reply.postid,reply.floor,reply.floorex,reply.content,
         reply.replyer,reply.replytime,reply.lastfloor FROM reply,post
-        WHERE postid=id AND replyer!=#{0}  AND username=#{0}
+        WHERE postid=id AND replyer!=#{0} AND username=#{0}
         UNION
-        SELECT * FROM reply
-        WHERE postid IN(SELECT postid FROM reply WHERE floorex=-1 AND replyer=#{0})
-        AND FLOOR IN(SELECT FLOOR FROM reply WHERE floorex=-1 AND replyer=#{0})
-        AND replyer!=#{0}
+        select * from reply
+        where (floor,postid) in(SELECT DISTINCT
+        floor,
+        postid
+        FROM
+        reply
+        LEFT JOIN post ON id = postid
+        WHERE
+        floorex =- 1
+        AND replyer = #{0}) and floorex!=-1 and replyer!=#{0}
         ORDER BY replytime DESC
     </select>
 
